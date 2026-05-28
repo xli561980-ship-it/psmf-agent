@@ -1,4 +1,4 @@
-# **psmf\_core\_protocol.md**
+# PSMF Core Protocol
 
 ## **极速减脂的临床生理学与内分泌学基础**
 

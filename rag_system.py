@@ -13,6 +13,7 @@ import logging
 import re
 import sys
 import traceback
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Final, List, Optional
 
@@ -103,15 +104,46 @@ DEFAULT_SOURCE_FILES: Final[tuple[str, ...]] = (
 # 食谱知识库单文件
 FOOD_SOURCE_FILES: Final[tuple[str, ...]] = ("psmf_food_database.md",)
 
-# 文本切块参数：Markdown/表格感知切块，超长块再回退到字符滑窗
-RAG_CHUNKING_VERSION: Final[str] = "markdown_v1"
+# 文本切块参数：按 Markdown 标题层级进行语义切块，表格保持完整，超长块再回退到滑窗
+RAG_CHUNKING_VERSION: Final[str] = "markdown_heading_v2"
 DEFAULT_CHUNK_SIZE: Final[int] = 900
 DEFAULT_CHUNK_OVERLAP: Final[int] = 120
 DEFAULT_INGEST_BATCH_SIZE: Final[int] = 16
+_HEADING_RE: Final[re.Pattern[str]] = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
+
+
+@dataclass(frozen=True)
+class MarkdownChunk:
+    """A retrieval chunk with heading metadata for explainable RAG."""
+
+    text: str
+    section_path: str
+    section_title: str
+    heading_level: int
+
+
+@dataclass
+class _MarkdownSection:
+    heading_path: tuple[tuple[int, str], ...]
+    blocks: List[str]
 
 
 def _is_markdown_heading(line: str) -> bool:
-    return bool(re.match(r"^#{1,6}\s+\S", line.strip()))
+    return _parse_markdown_heading(line) is not None
+
+
+def _clean_heading_title(title: str) -> str:
+    cleaned: str = title.strip().strip("#").strip()
+    cleaned = re.sub(r"^[*_`]+|[*_`]+$", "", cleaned).strip()
+    cleaned = cleaned.replace("\\_", "_").replace("\\)", ")")
+    return cleaned or "Untitled Section"
+
+
+def _parse_markdown_heading(line: str) -> Optional[tuple[int, str]]:
+    match = _HEADING_RE.match(line.strip())
+    if not match:
+        return None
+    return len(match.group(1)), _clean_heading_title(match.group(2))
 
 
 def _is_markdown_table_line(line: str) -> bool:
@@ -119,51 +151,71 @@ def _is_markdown_table_line(line: str) -> bool:
     return len(s) >= 2 and s.startswith("|") and s.endswith("|")
 
 
-def _split_markdown_units(text: str) -> List[str]:
-    """Split Markdown into semantic units while keeping table rows together."""
-    units: List[str] = []
-    buf: List[str] = []
+def _split_markdown_sections(text: str) -> List[_MarkdownSection]:
+    """Split Markdown into heading-scoped sections while keeping tables together."""
+    sections: List[_MarkdownSection] = []
+    heading_stack: List[tuple[int, str]] = []
+    block_buf: List[str] = []
     table_buf: List[str] = []
+    section_blocks: List[str] = []
 
-    def flush_buf() -> None:
-        nonlocal buf
-        block = "\n".join(buf).strip()
+    def flush_block() -> None:
+        nonlocal block_buf
+        block = "\n".join(block_buf).strip()
         if block:
-            units.append(block)
-        buf = []
+            section_blocks.append(block)
+        block_buf = []
 
     def flush_table() -> None:
         nonlocal table_buf
         block = "\n".join(table_buf).strip()
         if block:
-            units.append(block)
+            section_blocks.append(block)
         table_buf = []
+
+    def flush_section() -> None:
+        nonlocal section_blocks
+        if section_blocks:
+            sections.append(
+                _MarkdownSection(
+                    heading_path=tuple(heading_stack),
+                    blocks=section_blocks,
+                )
+            )
+            section_blocks = []
 
     for raw_line in text.splitlines():
         line = raw_line.rstrip()
+
         if _is_markdown_table_line(line):
-            flush_buf()
+            flush_block()
             table_buf.append(line)
             continue
 
         if table_buf:
             flush_table()
 
-        if _is_markdown_heading(line):
-            flush_buf()
-            units.append(line.strip())
+        heading = _parse_markdown_heading(line)
+        if heading is not None:
+            flush_block()
+            flush_section()
+            level, title = heading
+            while heading_stack and heading_stack[-1][0] >= level:
+                heading_stack.pop()
+            heading_stack.append((level, title))
             continue
 
         if not line.strip():
-            flush_buf()
+            flush_block()
             continue
 
-        buf.append(line)
+        block_buf.append(line)
 
-    flush_buf()
+    flush_block()
     if table_buf:
         flush_table()
-    return units
+    flush_section()
+    return sections
 
 
 def _fixed_window_chunks(
@@ -186,6 +238,52 @@ def _fixed_window_chunks(
     return chunks
 
 
+def _is_table_block(block: str) -> bool:
+    lines = [line for line in block.splitlines() if line.strip()]
+    return bool(lines) and all(_is_markdown_table_line(line) for line in lines)
+
+
+def _split_table_block(block: str, max_chars: int) -> List[str]:
+    """Split a large Markdown table by rows, repeating the table header."""
+    rows = [row.rstrip() for row in block.splitlines() if row.strip()]
+    if len(rows) <= 2:
+        return _fixed_window_chunks(block, chunk_size=max_chars, overlap=0)
+
+    header_len = 2 if re.match(r"^\|\s*:?-{3,}", rows[1].strip()) else 1
+    header = rows[:header_len]
+    body_rows = rows[header_len:]
+    parts: List[str] = []
+    current: List[str] = list(header)
+
+    for row in body_rows:
+        candidate = "\n".join(current + [row])
+        if len(candidate) <= max_chars or len(current) == header_len:
+            current.append(row)
+            continue
+
+        part = "\n".join(current).strip()
+        if len(part) > max_chars:
+            parts.extend(_fixed_window_chunks(part, chunk_size=max_chars, overlap=0))
+        elif part:
+            parts.append(part)
+        current = list(header) + [row]
+
+    part = "\n".join(current).strip()
+    if len(part) > max_chars:
+        parts.extend(_fixed_window_chunks(part, chunk_size=max_chars, overlap=0))
+    elif part:
+        parts.append(part)
+    return parts
+
+
+def _split_large_block(block: str, max_chars: int, overlap: int) -> List[str]:
+    """Split only when a single semantic block is too large for one chunk."""
+    safe_max = max(200, max_chars)
+    if _is_table_block(block):
+        return _split_table_block(block, safe_max)
+    return _fixed_window_chunks(block, chunk_size=safe_max, overlap=overlap)
+
+
 def _semantic_tail(text: str, overlap: int) -> str:
     """Return a paragraph-aligned tail for continuity between adjacent chunks."""
     if overlap <= 0:
@@ -204,16 +302,98 @@ def _semantic_tail(text: str, overlap: int) -> str:
     return "\n\n".join(tail).strip()
 
 
-def _chunk_text(
+def _format_section_prefix(heading_path: tuple[tuple[int, str], ...]) -> str:
+    return "\n".join(
+        f"{'#' * min(level, 6)} {title}" for level, title in heading_path
+    ).strip()
+
+
+def _section_path_text(heading_path: tuple[tuple[int, str], ...]) -> str:
+    return " > ".join(title for _, title in heading_path) or "Document"
+
+
+def _build_chunk_text(prefix: str, body: str) -> str:
+    body = body.strip()
+    if not prefix:
+        return body
+    if not body:
+        return prefix
+    return f"{prefix}\n\n{body}".strip()
+
+
+def _chunk_section(
+    section: _MarkdownSection,
+    *,
+    chunk_size: int,
+    overlap: int,
+) -> List[MarkdownChunk]:
+    """Create chunks inside a single heading section."""
+    prefix = _format_section_prefix(section.heading_path)
+    section_path = _section_path_text(section.heading_path)
+    section_title = section.heading_path[-1][1] if section.heading_path else "Document"
+    heading_level = section.heading_path[-1][0] if section.heading_path else 0
+    max_body_chars = max(200, chunk_size - len(prefix) - 2)
+    chunks: List[MarkdownChunk] = []
+    current_body = ""
+
+    def append_body(body: str) -> None:
+        text = _build_chunk_text(prefix, body)
+        if text:
+            chunks.append(
+                MarkdownChunk(
+                    text=text,
+                    section_path=section_path,
+                    section_title=section_title,
+                    heading_level=heading_level,
+                )
+            )
+
+    def flush_current() -> None:
+        nonlocal current_body
+        if current_body.strip():
+            append_body(current_body)
+        current_body = ""
+
+    for block in section.blocks:
+        block = block.strip()
+        if not block:
+            continue
+
+        if len(_build_chunk_text(prefix, block)) > chunk_size:
+            flush_current()
+            for piece in _split_large_block(block, max_body_chars, overlap):
+                append_body(piece)
+            continue
+
+        candidate_body = block if not current_body else current_body + "\n\n" + block
+        if len(_build_chunk_text(prefix, candidate_body)) <= chunk_size:
+            current_body = candidate_body
+            continue
+
+        previous_body = current_body
+        flush_current()
+        tail = _semantic_tail(previous_body, min(overlap, max_body_chars // 2))
+        candidate_body = tail + "\n\n" + block if tail else block
+        current_body = (
+            candidate_body
+            if len(_build_chunk_text(prefix, candidate_body)) <= chunk_size
+            else block
+        )
+
+    flush_current()
+    return chunks
+
+
+def _chunk_markdown(
     text: str,
     chunk_size: int = DEFAULT_CHUNK_SIZE,
     overlap: int = DEFAULT_CHUNK_OVERLAP,
-) -> List[str]:
+) -> List[MarkdownChunk]:
     """
-    将 Markdown 文档切成适合检索的语义块。
+    将 Markdown 文档切成按标题层级组织的语义块。
 
-    优先保留标题、段落和表格的边界；单个超长表格/段落再回退到字符滑窗。
-    这样比纯字符切片更适合 PSMF 规则表、症状矩阵和食材表。
+    每个 chunk 都携带当前 ``# / ## / ###`` 标题路径，并在正文前重复标题上下文；
+    表格按行保留，只有超长段落或超长表格才回退到滑窗切分。
     """
     cleaned: str = text.strip()
     if not cleaned:
@@ -222,38 +402,29 @@ def _chunk_text(
     if overlap >= chunk_size:
         overlap = max(0, chunk_size // 4)
 
-    units: List[str] = _split_markdown_units(cleaned)
-    chunks: List[str] = []
-    current: str = ""
-
-    def flush_current() -> None:
-        nonlocal current
-        piece = current.strip()
-        if piece:
-            chunks.append(piece)
-        current = ""
-
-    for unit in units:
-        if len(unit) > chunk_size:
-            flush_current()
-            chunks.extend(
-                _fixed_window_chunks(unit, chunk_size=chunk_size, overlap=overlap)
-            )
-            continue
-
-        candidate = unit if not current else current + "\n\n" + unit
-        if len(candidate) <= chunk_size:
-            current = candidate
-            continue
-
-        prev = current
-        flush_current()
-        tail = _semantic_tail(prev, overlap)
-        candidate = tail + "\n\n" + unit if tail else unit
-        current = candidate if len(candidate) <= chunk_size else unit
-
-    flush_current()
+    sections = _split_markdown_sections(cleaned)
+    chunks: List[MarkdownChunk] = []
+    for section in sections:
+        chunks.extend(
+            _chunk_section(section, chunk_size=chunk_size, overlap=overlap)
+        )
     return chunks
+
+
+def _chunk_text(
+    text: str,
+    chunk_size: int = DEFAULT_CHUNK_SIZE,
+    overlap: int = DEFAULT_CHUNK_OVERLAP,
+) -> List[str]:
+    """
+    将 Markdown 文档切成适合检索的语义块，并仅返回文本。
+
+    保留该函数是为了兼容旧调用；入库时使用 ``_chunk_markdown`` 获取标题元数据。
+    """
+    return [
+        chunk.text
+        for chunk in _chunk_markdown(text, chunk_size=chunk_size, overlap=overlap)
+    ]
 
 
 def _rerank_food_chunks(query: str, chunks: List[str]) -> List[str]:
@@ -416,7 +587,7 @@ class PSMFRAGKnowledgeBase:
                 logger.error("读取文件失败：%s", file_path)
                 raise OSError(f"无法读取文件：{file_path}") from exc
 
-            chunks: List[str] = _chunk_text(
+            chunks: List[MarkdownChunk] = _chunk_markdown(
                 raw_text, chunk_size=chunk_size, overlap=chunk_overlap
             )
             if not chunks:
@@ -439,12 +610,15 @@ class PSMFRAGKnowledgeBase:
                     )
                 chunk_id: str = f"{filename}#{idx}"
                 all_ids.append(chunk_id)
-                all_documents.append(chunk)
+                all_documents.append(chunk.text)
                 all_metadatas.append(
                     {
                         "source": filename,
                         "chunk_index": idx,
-                        "chunk_chars": len(chunk),
+                        "chunk_chars": len(chunk.text),
+                        "section_path": chunk.section_path,
+                        "section_title": chunk.section_title,
+                        "heading_level": chunk.heading_level,
                         "chunking": RAG_CHUNKING_VERSION,
                     }
                 )
@@ -521,7 +695,7 @@ class PSMFRAGKnowledgeBase:
                 logger.error("读取文件失败：%s", file_path)
                 raise OSError(f"无法读取文件：{file_path}") from exc
 
-            chunks: List[str] = _chunk_text(
+            chunks: List[MarkdownChunk] = _chunk_markdown(
                 raw_text, chunk_size=chunk_size, overlap=chunk_overlap
             )
             if not chunks:
@@ -544,13 +718,16 @@ class PSMFRAGKnowledgeBase:
                     )
                 chunk_id: str = f"{collection_name}:{filename}#{idx}"
                 all_ids.append(chunk_id)
-                all_documents.append(chunk)
+                all_documents.append(chunk.text)
                 all_metadatas.append(
                     {
                         "source": filename,
                         "collection": collection_name,
                         "chunk_index": idx,
-                        "chunk_chars": len(chunk),
+                        "chunk_chars": len(chunk.text),
+                        "section_path": chunk.section_path,
+                        "section_title": chunk.section_title,
+                        "heading_level": chunk.heading_level,
                         "chunking": RAG_CHUNKING_VERSION,
                     }
                 )
@@ -621,12 +798,9 @@ class PSMFRAGKnowledgeBase:
             return []
 
         try:
-            n_results = top_k
-            if collection_name == COLLECTION_FOOD:
-                n_results = max(top_k, min(24, top_k * 8))
             results = collection.query(
                 query_texts=[trimmed],
-                n_results=n_results,
+                n_results=top_k,
             )
         except Exception:
             logger.exception("ChromaDB query 失败，query=%r", trimmed)

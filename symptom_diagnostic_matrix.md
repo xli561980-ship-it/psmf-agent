@@ -1,4 +1,4 @@
-# **symptom\_diagnostic\_matrix.md**
+# PSMF Symptom Diagnostic Matrix
 
 ## **极低热量饮食与生酮代谢的系统生理学与内分泌适应机制基础**
 

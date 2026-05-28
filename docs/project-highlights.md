@@ -11,6 +11,7 @@
 
 - 基于 Gemini 构建核心对话与内容生成能力。
 - 使用 ChromaDB 搭建本地 RAG 知识库，将 PSMF 协议、食物数据库、训练指南和症状矩阵用于垂直知识问答。
+- RAG 采用 Markdown 标题语义切分：按 `# / ## / ###` 章节建立 chunk，保留标题路径、来源文件和 section metadata，并对食材表、症状矩阵等表格结构做保护。
 - 通过 `memory_manager.py` 维护用户长期记忆，包括体重、体脂、Category、蛋白质目标、补剂状态、历史打卡和对话上下文。
 - 通过 `psmf_engine.py` 将 LLM 调用、业务规则判断、RAG 门控、打卡处理和风险提示编排在同一个 Agent 流程中。
 - 使用 `.env.example`、`.gitignore` 和本地缓存隔离，保持密钥、用户数据和向量库缓存不进入公开仓库。

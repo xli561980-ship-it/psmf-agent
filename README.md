@@ -27,7 +27,7 @@
 PSMF Agent 将健康管理场景拆解为一个可演示的 AI Agent 闭环：
 
 - 使用 **Gemini / LLM** 负责自然语言理解、回答生成和图片信息提取。
-- 使用 **RAG 知识库** 承载 PSMF 协议、食物数据库、训练指南、微量元素建议和症状风险矩阵。
+- 使用 **RAG 知识库** 承载 PSMF 协议、食物数据库、训练指南、微量元素建议和症状风险矩阵，并通过 Markdown 标题语义切分提升检索命中质量。
 - 使用 **用户长期记忆** 记录体重、体脂、Category、瘦体重估算、蛋白质目标、补剂打卡、饮食记录和对话历史。
 - 使用 **饮食 / 训练 / 补剂打卡** 支撑用户日常跟进、阶段复盘和服务连续性。
 - 使用 **Streamlit Web Demo** 展示完整用户旅程，适合方案沟通、客户验证和 PoC 演示。
@@ -60,11 +60,11 @@ flowchart TB
     AGENT["GeminiPSMFAgent<br/>Agent 核心编排"]
     DIALOG["对话理解与回复生成"]
     RULES["业务规则判断<br/>Category / 蛋白质目标 / 打卡处理"]
-    RAG["RAG 检索<br/>协议 / 食物库 / 训练指南 / 症状矩阵"]
+    RAG["RAG 检索<br/>标题语义切分 / 向量索引 / 来源过滤"]
     MEMORY["长期记忆<br/>用户档案 / 每日记录 / 历史对话"]
     SAFETY["安全层<br/>高风险症状识别 / 免责声明 / 人工介入建议"]
 
-    KB["知识库 Markdown<br/>psmf_*.md / symptom matrix"]
+    KB["知识库 Markdown<br/># / ## / ### 结构化章节"]
     PROFILE["user_profiles.json<br/>本地用户档案，不提交仓库"]
     ENV[".env<br/>模型密钥 / Bot Token / 时区 / 提醒时间"]
     CACHE["chroma_db / .cache<br/>本地向量库缓存，不提交仓库"]
@@ -86,6 +86,21 @@ flowchart TB
     AGENT --> ENV
 ```
 
+## RAG 技术实现
+
+本项目的 RAG 不是简单的按句子或固定字符窗口切分，而是面向知识库文档结构做了标题语义切分，便于在演示时解释“知识从哪里来、为什么命中这一段”。
+
+| 技术点 | 当前实现 | 业务价值 |
+|---|---|---|
+| 知识库结构 | Markdown 文档使用 `# / ## / ###` 组织协议、食物库、训练指南、微量元素和症状矩阵 | 专家知识可维护、可审阅，便于顾问团队持续沉淀 |
+| 切分策略 | `rag_system.py` 使用 `markdown_heading_v2`，按 Markdown 标题层级拆分 section | 避免把不同主题混在同一块，提升垂直问答准确性 |
+| Chunk 上下文 | 每个 chunk 都会在正文前保留当前标题路径，并写入 `section_path`、`section_title`、`heading_level` metadata | 检索结果更可解释，方便定位命中章节 |
+| 表格处理 | 食材表、症状矩阵等 Markdown 表格保持行结构；超长表格按行切分并保留表头 | 避免营养数据、风险矩阵被切坏 |
+| 超长内容兜底 | 单个段落或表格过长时才回退到字符滑窗，默认 `chunk_size=900`、`chunk_overlap=120` | 兼顾语义完整性和向量检索粒度 |
+| 向量存储 | 使用 ChromaDB 本地持久化索引，主知识库集合为 `psmf_knowledge`，食物库集合为 `food_db` | 支持本地 PoC 演示，不依赖外部向量数据库 |
+| 索引版本 | `RAG_CHUNKING_VERSION` 写入 metadata；切分策略升级后会触发本地索引重建 | 保证 Demo 使用最新知识切分方式 |
+| 检索控制 | 支持按 `source` 过滤指定知识文件，并对食物库检索做轻量 rerank | 让 Agent 在不同业务问题中调用更合适的知识源 |
+
 ## 功能模块说明
 
 | 文件 | 模块作用 | 在售前演示中的价值 |
@@ -94,7 +109,7 @@ flowchart TB
 | `telegram_bot.py` | Telegram Bot 入口，支持文本、图片、命令、调度器和主动提醒 | 展示私域触达、移动端服务和持续陪伴能力 |
 | `main.py` | CLI 入口，初始化 RAG 并启动终端对话 | 用于快速技术验证和本地调试，证明核心 Agent 不依赖单一 UI |
 | `psmf_engine.py` | Agent 核心编排，包含 Gemini 调用、体征提取、业务规则、RAG 门控和风险提示 | 展示如何把 LLM 能力与垂直业务规则结合，而不是只做通用聊天 |
-| `rag_system.py` | 基于 ChromaDB 的本地知识库索引和检索 | 展示专家知识沉淀、可控问答和行业知识增强能力 |
+| `rag_system.py` | 基于 ChromaDB 的本地知识库索引和检索，支持 Markdown 标题语义切分、表格保留、来源过滤和 chunk metadata | 展示专家知识沉淀、可控问答、检索可解释性和行业知识增强能力 |
 | `memory_manager.py` | 管理用户档案、每日记录、补剂状态、历史对话和长期记忆 | 展示长期用户服务能力和个性化跟进能力 |
 | `system_prompt.txt` | Agent 角色、语气和行为边界 | 展示 Prompt 设计与行业角色定义能力 |
 | `psmf_core_protocol.md` | PSMF 核心协议知识 | 支撑专业规则问答和方案解释 |
