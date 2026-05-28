@@ -4,7 +4,7 @@ PSMF Agent 终端闭环入口：
 
 1. 初始化本地 RAG（Chroma 为空则自动 ingest）
 2. 校验 GEMINI_API_KEY
-3. 自然语言多轮对话 → GeminiPSMFAgent（工具 + RAG）
+3. 自然语言多轮对话 → AgentOrchestrator（Planner + Tools + RAG）
 4. 对回复中的安全警告段落使用红色终端高亮
 """
 
@@ -26,7 +26,7 @@ _ENV_FILE: Path = _PROJECT_ROOT / ".env"
 
 load_dotenv(dotenv_path=_ENV_FILE)
 
-from psmf_engine import GeminiPSMFAgent  # noqa: E402
+from agent import AgentOrchestrator  # noqa: E402
 from rag_system import ensure_all_local_indexes_ready  # noqa: E402
 
 # 终端颜色（与安全护栏一致）
@@ -205,7 +205,7 @@ def main() -> None:
     _ensure_gemini_api_key_interactive()
 
     try:
-        agent: GeminiPSMFAgent = GeminiPSMFAgent()
+        agent: AgentOrchestrator = AgentOrchestrator()
     except RuntimeError as exc:
         print(str(exc), file=sys.stderr)
         sys.exit(1)

@@ -2,7 +2,7 @@
 """
 PSMF Agent — Streamlit 网页 Demo。
 
-与 ``telegram_bot.py`` 共用同一套 ``GeminiPSMFAgent`` + ``user_profiles.json``；
+与 ``telegram_bot.py`` 共用同一套 ``AgentOrchestrator`` + ``user_profiles.json``；
 网页用户使用独立 ``user_id``（``web_<登录名>``），与 Telegram ``chat_id`` 不冲突。
 """
 
@@ -25,7 +25,7 @@ from memory_manager import (  # noqa: E402
     SUPPLEMENT_LABELS_ZH,
     format_supplement_status,
 )
-from psmf_engine import GeminiPSMFAgent  # noqa: E402
+from agent import AgentOrchestrator  # noqa: E402
 from rag_system import ensure_all_local_indexes_ready  # noqa: E402
 
 # --- 演示登录（可通过 .env 覆盖，便于公开作品集与本地演示复用）---
@@ -51,10 +51,10 @@ _COACH_SIDEBAR: str = """
 
 
 @st.cache_resource
-def _get_shared_agent() -> GeminiPSMFAgent:
+def _get_shared_agent() -> AgentOrchestrator:
     """单例引擎：与 Bot 相同逻辑内核，共享默认 ``user_profiles.json`` 路径。"""
     ensure_all_local_indexes_ready()
-    return GeminiPSMFAgent()
+    return AgentOrchestrator()
 
 
 def _init_session_state() -> None:
@@ -79,10 +79,10 @@ def _format_tp(tp: Any) -> str:
     return "—"
 
 
-def _render_sidebar_vitals(agent: GeminiPSMFAgent, uid: str) -> None:
+def _render_sidebar_vitals(agent: AgentOrchestrator, uid: str) -> None:
     st.sidebar.markdown("### 当前档案（核心体征）")
     st.sidebar.caption(f"用户 ID：`{uid}`")
-    prof: dict[str, Any] = agent._memory.get_user(uid)
+    prof: dict[str, Any] = agent.memory.get_user(uid)
     w = prof.get("weight")
     bf = prof.get("body_fat")
     cat = prof.get("category")
@@ -100,7 +100,7 @@ def _render_sidebar_vitals(agent: GeminiPSMFAgent, uid: str) -> None:
     st.sidebar.divider()
     st.sidebar.markdown("### 今日微量元素补剂")
     try:
-        sup = agent._memory.get_today_supplement_status(uid)
+        sup = agent.memory.get_today_supplement_status(uid)
         st.sidebar.caption(format_supplement_status(sup))
         n_done = sum(1 for k in SUPPLEMENT_KEYS if sup.get(k))
         st.sidebar.progress(
@@ -137,8 +137,8 @@ def _render_sidebar_vitals(agent: GeminiPSMFAgent, uid: str) -> None:
         st.rerun()
 
 
-def _load_chat_history(agent: GeminiPSMFAgent, uid: str) -> list[dict[str, Any]]:
-    prof = agent._memory.get_user(uid)
+def _load_chat_history(agent: AgentOrchestrator, uid: str) -> list[dict[str, Any]]:
+    prof = agent.memory.get_user(uid)
     hist = prof.get("chat_history")
     if not isinstance(hist, list):
         return []
@@ -205,7 +205,7 @@ def main() -> None:
         return
 
     uid: str = _web_user_id(st.session_state.login_name)
-    agent: GeminiPSMFAgent = _get_shared_agent()
+    agent: AgentOrchestrator = _get_shared_agent()
 
     _render_sidebar_vitals(agent, uid)
 
@@ -235,7 +235,7 @@ def main() -> None:
             st.caption("（本句附带图片：营养成分表 / 补剂包装标签）")
 
     with st.chat_message("assistant"):
-        with st.spinner("教练正在思考…（Phase 1 抽取 → Phase 2 计算 → Phase 3 检索与合成）"):
+        with st.spinner("Agent 正在思考…（Planner → Tools → Observations → Final）"):
             try:
                 reply: str = agent.process_message(
                     uid,

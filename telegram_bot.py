@@ -36,7 +36,7 @@ from telegram.ext import (  # noqa: E402
     filters,
 )
 
-from psmf_engine import GeminiPSMFAgent  # noqa: E402
+from agent import AgentOrchestrator  # noqa: E402
 from rag_system import ensure_all_local_indexes_ready  # noqa: E402
 
 logger = logging.getLogger(__name__)
@@ -140,7 +140,7 @@ _PROACTIVE_TEXTS: dict[str, str] = {
 
 
 async def send_proactive_message(application: Application, chat_id: int, kind: str) -> None:
-    agent: GeminiPSMFAgent | None = application.bot_data.get("agent")
+    agent: AgentOrchestrator | None = application.bot_data.get("agent")
     if agent is None:
         return
     text: str = _PROACTIVE_TEXTS.get(kind, "【系统提醒】")
@@ -189,7 +189,7 @@ def sync_user_jobs(application: Application, user_id: str) -> None:
     sched: AsyncIOScheduler | None = application.bot_data.get("scheduler")
     if sched is None:
         return
-    agent: GeminiPSMFAgent | None = application.bot_data.get("agent")
+    agent: AgentOrchestrator | None = application.bot_data.get("agent")
     if agent is None:
         return
     uid: str = str(user_id).strip()
@@ -200,7 +200,7 @@ def sync_user_jobs(application: Application, user_id: str) -> None:
         if jid.startswith(f"u{uid}_"):
             sched.remove_job(jid)
 
-    prof: dict = agent._memory.get_user(uid)
+    prof: dict = agent.memory.get_user(uid)
     try:
         stage: int = int(prof.get("onboarding_stage") or 0)
     except (TypeError, ValueError):
@@ -255,13 +255,13 @@ async def _post_init(application: Application) -> None:
     tz_name: str = (os.environ.get("SCHEDULER_TIMEZONE") or "Europe/Berlin").strip()
     sched = AsyncIOScheduler(timezone=tz_name)
     application.bot_data["scheduler"] = sched
-    agent: GeminiPSMFAgent = application.bot_data["agent"]
+    agent: AgentOrchestrator = application.bot_data["agent"]
     application.bot_data["sync_user_jobs"] = lambda uid: sync_user_jobs(application, uid)
     print(
         f"[调度器] 正在根据档案注册定时任务（时区 {tz_name}）…",
         flush=True,
     )
-    for uid in agent._memory.list_all_user_ids():
+    for uid in agent.memory.list_all_user_ids():
         sync_user_jobs(application, uid)
     sched.start()
     logger.info("APScheduler 已启动 timezone=%s", tz_name)
@@ -381,7 +381,7 @@ async def _execute_agent_and_reply(
         return
 
     chat_id: int = update.effective_chat.id
-    agent: GeminiPSMFAgent | None = context.bot_data.get("agent")
+    agent: AgentOrchestrator | None = context.bot_data.get("agent")
     if agent is None:
         logger.error("bot_data['agent'] 未初始化")
         await update.message.reply_text(_USER_FACING_ERROR)
@@ -424,7 +424,7 @@ async def _execute_agent_and_reply(
                 await asyncio.sleep(0.35)
     except Exception:
         traceback.print_exc()
-        logger.exception("GeminiPSMFAgent.process_message 失败 chat_id=%s", chat_id)
+        logger.exception("AgentOrchestrator.process_message 失败 chat_id=%s", chat_id)
         try:
             await update.message.reply_text(_USER_FACING_ERROR)
         except Exception:
@@ -481,7 +481,7 @@ async def on_photo_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     )
 
 
-def _bootstrap_sync() -> GeminiPSMFAgent:
+def _bootstrap_sync() -> AgentOrchestrator:
     logging.basicConfig(
         level=logging.INFO,
         format="%(levelname)s %(name)s: %(message)s",
@@ -497,9 +497,9 @@ def _bootstrap_sync() -> GeminiPSMFAgent:
     ensure_all_local_indexes_ready()
     print("【1/3】向量库就绪。", flush=True)
     print("", flush=True)
-    print("【2/3】正在初始化本地存储（user_profiles.json）与 Gemini 引擎…", flush=True)
-    logger.info("正在构造 GeminiPSMFAgent")
-    agent = GeminiPSMFAgent()
+    print("【2/3】正在初始化本地存储（user_profiles.json）与 Agent Orchestrator…", flush=True)
+    logger.info("正在构造 AgentOrchestrator")
+    agent = AgentOrchestrator()
     print("【2/3】存储与引擎初始化完成。", flush=True)
     print("", flush=True)
     print("【3/3】核心组件已就绪，即将连接 Telegram。", flush=True)
@@ -517,7 +517,7 @@ def main() -> None:
         sys.exit(1)
 
     try:
-        agent: GeminiPSMFAgent = _bootstrap_sync()
+        agent: AgentOrchestrator = _bootstrap_sync()
     except RuntimeError as exc:
         print(str(exc), file=sys.stderr)
         sys.exit(1)
