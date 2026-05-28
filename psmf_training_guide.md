@@ -112,8 +112,8 @@
 
 ### **关键电解质与抗炎补剂**
 
-1. **钠 (Sodium)**：PSMF 会导致身体迅速排钠，低钠会导致血容量下降，使人感到极度虚弱。训练前补充 1-2 克食盐能有效维持泵感和力量 9。  
-2. **鱼油 (Fish Oil)**：每日 3-5 克鱼油能通过其抗炎特性保护关节滑膜，在热量不足导致的结缔组织脆弱期提供生理屏障 9。  
+1. **钠 (Sodium)**：PSMF 会导致身体迅速排钠，低钠会导致血容量下降，使人感到极度虚弱。训练前补充 1-2 克食盐能有效维持泵感和力量 9。
+2. **鱼油 (Fish Oil)**：每日 3-5 克鱼油能通过其抗炎特性保护关节滑膜，在热量不足导致的结缔组织脆弱期提供生理屏障 9。
 3. **多巴胺前体**：如酪氨酸（Tyrosine），可能有助于缓解 PSMF 期间的神经递质耗竭，改善训练专注度 13。
 
 ## **长期执行逻辑与心理韧性**
@@ -127,41 +127,3 @@ PSMF 的训练绝不是为了“消耗热量”。如果执行者的目标是通
 ## **结论：作为精密手术的 PSMF 训练**
 
 PSMF 期间的训练应被视为一场精密的生理手术，而非粗犷的体能挑战。每一个组数、每一次重复都必须服务于“维持张力”这一个核心目标。通过执行 1/3 容量法则、利用 5-8 次的机械张力区间、严密的 CNS 疲劳监测以及灵活的居家替代方案，执行者可以在减脂效率最大化的同时，守住瘦体重这一核心代谢资产。任何偏离“低容量、高强度、强反馈”原则的行为，都会显著增加 PSMF 失败的风险。
-
-#### **引用的著作**
-
-1. Lyle McDonald \- The Rapid Fat Loss Handbook \- Googleapis.com, 访问时间为 五月 2, 2026， [https://storage.googleapis.com/wzukusers/user-22912051/documents/579912fc07448BGNyoTN/Lyle%20McDonald%20-%20The%20Rapid%20Fat%20Loss%20Handbook.pdf](https://storage.googleapis.com/wzukusers/user-22912051/documents/579912fc07448BGNyoTN/Lyle%20McDonald%20-%20The%20Rapid%20Fat%20Loss%20Handbook.pdf)  
-2. Can You Gain Muscle While in a Calorie Deficit? UK Guide \- Bolt Pharmacy, 访问时间为 五月 2, 2026， [https://www.boltpharmacy.co.uk/guide/can-you-gain-muscle-while-in-a-calorie-deficit](https://www.boltpharmacy.co.uk/guide/can-you-gain-muscle-while-in-a-calorie-deficit)  
-3. Do You Lose Muscle in a Calorie Deficit? Evidence-Based Guide \- Bolt Pharmacy, 访问时间为 五月 2, 2026， [https://www.boltpharmacy.co.uk/guide/do-you-lose-muscle-in-a-calorie-deficit](https://www.boltpharmacy.co.uk/guide/do-you-lose-muscle-in-a-calorie-deficit)  
-4. What is the primary driver of hypertrophy? \- Lyle McDonald : r/weightroom \- Reddit, 访问时间为 五月 2, 2026， [https://www.reddit.com/r/weightroom/comments/ckjd7q/what\_is\_the\_primary\_driver\_of\_hypertrophy\_lyle/](https://www.reddit.com/r/weightroom/comments/ckjd7q/what_is_the_primary_driver_of_hypertrophy_lyle/)  
-5. Mechanical Tension vs. Metabolic Stress: What Really Builds Muscle? \- Speediance UK, 访问时间为 五月 2, 2026， [https://speediance.co.uk/blogs/news/mechanical-tension-vs-metabolic-stress-unlocking-the-secrets-of-muscle-growth](https://speediance.co.uk/blogs/news/mechanical-tension-vs-metabolic-stress-unlocking-the-secrets-of-muscle-growth)  
-6. My 60-day Journey with Chris Pratt's Muscle-building Plan \- Intuit Lab, 访问时间为 五月 2, 2026， [https://www.ecole-intuit-lab.com/news/header.php?id=master-forex-trading-in-person-f526746210a0\&v=sp](https://www.ecole-intuit-lab.com/news/header.php?id=master-forex-trading-in-person-f526746210a0&v=sp)  
-7. Best Calorie Deficit to Lose Fat and Gain Muscle: UK Guide \- Bolt Pharmacy, 访问时间为 五月 2, 2026， [https://www.boltpharmacy.co.uk/guide/best-calorie-deficit-to-lose-fat-and-gain-muscle](https://www.boltpharmacy.co.uk/guide/best-calorie-deficit-to-lose-fat-and-gain-muscle)  
-8. Lyle McDonald's Bulking Routine Explained \- JCD Fitness, 访问时间为 五月 2, 2026， [https://jcdfitness.com/2009/01/lyle-mcdonalds-bulking-routine/](https://jcdfitness.com/2009/01/lyle-mcdonalds-bulking-routine/)  
-9. Lyle McDonald's Rapid Fatloss Handbook: Before and After, Results ..., 访问时间为 五月 2, 2026， [https://www.powerliftingtowin.com/rapid-fatloss-handbook-before-and-after-results-review/](https://www.powerliftingtowin.com/rapid-fatloss-handbook-before-and-after-results-review/)  
-10. Set Volume for Muscle Size: The Ultimate Evidence Based Bible \- Weightology, 访问时间为 五月 2, 2026， [https://weightology.net/the-members-area/evidence-based-guides/set-volume-for-muscle-size-the-ultimate-evidence-based-bible/](https://weightology.net/the-members-area/evidence-based-guides/set-volume-for-muscle-size-the-ultimate-evidence-based-bible/)  
-11. PSMF by Lyle McDonald and GB \- Getting Started \- GymnasticBodies, 访问时间为 五月 2, 2026， [https://www.gymnasticbodies.com/forum/topic/8815-psmf-by-lyle-mcdonald-and-gb/](https://www.gymnasticbodies.com/forum/topic/8815-psmf-by-lyle-mcdonald-and-gb/)  
-12. CNS Fatigue \- THE BAR GYM & STRENGTH TRAINING, 访问时间为 五月 2, 2026， [https://www.thebarthegym.com/blog/cns-fatigue](https://www.thebarthegym.com/blog/cns-fatigue)  
-13. What Is CNS Fatigue? Overcoming the Side Effects \- Biostrap, 访问时间为 五月 2, 2026， [https://biostrap.com/academy/cns-fatigue/](https://biostrap.com/academy/cns-fatigue/)  
-14. What is CNS fatigue? Discover the symptoms & causes \- Recovery Systems, 访问时间为 五月 2, 2026， [https://www.recoverysystemssport.com/central-nervous-system-cns-fatigue/](https://www.recoverysystemssport.com/central-nervous-system-cns-fatigue/)  
-15. GLP-1 and Strength Training: Maintaining Muscle \- 10 Fitness, 访问时间为 五月 2, 2026， [https://10fitness.com/glp-1-strength-training-together/](https://10fitness.com/glp-1-strength-training-together/)  
-16. What Is Hypertrophy Training? Train To Maximize Gains | Gymshark Central, 访问时间为 五月 2, 2026， [https://www.gymshark.com/blog/article/hypertrophy-training](https://www.gymshark.com/blog/article/hypertrophy-training)  
-17. Best Deadlift Alternatives | ATHLEAN-X, 访问时间为 五月 2, 2026， [https://learn.athleanx.com/articles/legs-for-men/deadlift-alternatives](https://learn.athleanx.com/articles/legs-for-men/deadlift-alternatives)  
-18. The 12 Best Bodyweight Exercises for Functional Strength \- Spartan Race, 访问时间为 五月 2, 2026， [https://www.spartan.com/en/blog/functional-bodyweight-workout](https://www.spartan.com/en/blog/functional-bodyweight-workout)  
-19. 10 Safer, Easier or More Efficient Deadlift Alternatives \- Naked Nutrition, 访问时间为 五月 2, 2026， [https://nakednutrition.com/blogs/fitness/deadlift-alternatives](https://nakednutrition.com/blogs/fitness/deadlift-alternatives)  
-20. 10 Best Upper Body Exercises for Building Muscle \- Gold's Gym, 访问时间为 五月 2, 2026， [https://www.goldsgym.com/blog/upper-body-exercises-for-building-muscle/](https://www.goldsgym.com/blog/upper-body-exercises-for-building-muscle/)  
-21. Ultimate Bodyweight Alternatives For Common Gym Exercises, 访问时间为 五月 2, 2026， [https://ashotofadrenaline.net/bodyweight-exercise-alternatives/](https://ashotofadrenaline.net/bodyweight-exercise-alternatives/)  
-22. The Best Deadlift Alternatives \- Outlift, 访问时间为 五月 2, 2026， [https://outlift.com/deadlift-alternatives/](https://outlift.com/deadlift-alternatives/)  
-23. 103 Isolation Exercises for Your Whole Body \- Healthline, 访问时间为 五月 2, 2026， [https://www.healthline.com/nutrition/isolation-exercises](https://www.healthline.com/nutrition/isolation-exercises)  
-24. Episode 122:How To Optimize Hypertrophy Training with Paul Carter \- Rachel Gregory, 访问时间为 五月 2, 2026， [https://www.rgfit.com/blog/Episode-122-How-To-Optimize-Hypertrophy-Training-with-Paul-Carter](https://www.rgfit.com/blog/Episode-122-How-To-Optimize-Hypertrophy-Training-with-Paul-Carter)  
-25. 2-Week Deload Workout Program \- Muscle & Strength, 访问时间为 五月 2, 2026， [https://www.muscleandstrength.com/workouts/2-week-deload-program](https://www.muscleandstrength.com/workouts/2-week-deload-program)  
-26. Deloads \- The Muscle PhD, 访问时间为 五月 2, 2026， [https://themusclephd.com/deloads-2/](https://themusclephd.com/deloads-2/)  
-27. Signs You Should Consider A Deload \- The Bodybuilding Dietitians, 访问时间为 五月 2, 2026， [https://www.thebodybuildingdietitians.com/blog/signs-you-should-consider-a-deload](https://www.thebodybuildingdietitians.com/blog/signs-you-should-consider-a-deload)  
-28. CNS Fatigue \- The Muscle PhD, 访问时间为 五月 2, 2026， [https://themusclephd.com/cns-fatigue/](https://themusclephd.com/cns-fatigue/)  
-29. What the Nervous System Tells Us About Recovery | Polar Global, 访问时间为 五月 2, 2026， [https://www.polar.com/en/journal/nervous-system-fatigue](https://www.polar.com/en/journal/nervous-system-fatigue)  
-30. Beast Mode or Wimp Mode: Do You Need a Deload? \- Biolayne, 访问时间为 五月 2, 2026， [https://biolayne.com/articles/training/beast-mode-wimp-mode-need-deload/](https://biolayne.com/articles/training/beast-mode-wimp-mode-need-deload/)  
-31. Progressive Overload Without Weights: A Complete Guide to Building Muscle and Strength Using Only Bodyweight Exercises \- NOSSK, 访问时间为 五月 2, 2026， [https://nossk.com/blogs/news/progressive-overload-without-weights-a-complete-guide-to-building-muscle-and-strength-using-only-bodyweight-exercises](https://nossk.com/blogs/news/progressive-overload-without-weights-a-complete-guide-to-building-muscle-and-strength-using-only-bodyweight-exercises)  
-32. The PERFECT Home Workout \- Bodyweight \- athlean-x, 访问时间为 五月 2, 2026， [https://learn.athleanx.com/articles/the-perfect-home-workout-one-month-plan](https://learn.athleanx.com/articles/the-perfect-home-workout-one-month-plan)  
-33. How to maintain physique built from weight lifting with bodyweight training? \- Reddit, 访问时间为 五月 2, 2026， [https://www.reddit.com/r/bodyweightfitness/comments/1itmnjt/how\_to\_maintain\_physique\_built\_from\_weight/](https://www.reddit.com/r/bodyweightfitness/comments/1itmnjt/how_to_maintain_physique_built_from_weight/)  
-34. Calisthenics vs Weights for Fat Loss: A Science-Backed Comparison | BodySpec, 访问时间为 五月 2, 2026， [https://www.bodyspec.com/blog/post/calisthenics\_vs\_weights\_for\_fat\_loss\_a\_sciencebacked\_comparison](https://www.bodyspec.com/blog/post/calisthenics_vs_weights_for_fat_loss_a_sciencebacked_comparison)  
-35. The Best Way to Create a Calorie Deficit: Walk, Run, Lift, or Diet? \- RP Strength, 访问时间为 五月 2, 2026， [https://rpstrength.com/blogs/articles/the-best-way-to-create-a-calorie-deficit-walk-run-lift-or-diet](https://rpstrength.com/blogs/articles/the-best-way-to-create-a-calorie-deficit-walk-run-lift-or-diet)

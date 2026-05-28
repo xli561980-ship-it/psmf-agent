@@ -97,7 +97,7 @@ DEFAULT_SOURCE_FILES: Final[tuple[str, ...]] = (
     "psmf_core_protocol.md",
     "symptom_diagnostic_matrix.md",
     "psmf_training_guide.md",
-    "PSMF极低碳水与极低热量状态下的微量元素及电解质临床补充指南 36af35d544e5801c9fdef82149191af7.md",
+    "psmf_micronutrient_electrolyte_guide.md",
 )
 
 # 食谱知识库单文件

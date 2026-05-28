@@ -58,16 +58,16 @@ PSMF 在临床本质上可以被视为一种“剔除了膳食脂肪的生酮饮
 
 ### **碳水化合物生理红线 (Carbohydrates Red Line)**
 
-* **每日净碳水摄入上限**：严格控制在 **20 \- 50 克 / 天** 3。  
-* **成分与来源强制要求**：这 20-50 克的额度绝对不能来源于任何形式的淀粉（大米、土豆）或单双糖类（水果、蔗糖）。其唯一的合法来源必须是大量摄入的非淀粉类高纤维蔬菜（如菠菜、西蓝花、芹菜、羽衣甘蓝）中所含的隐形碳水化合物，以及极低热量调味品中不可避免的微量碳水 3。在计算时，不被肠道吸收的膳食纤维应从总碳水中扣除，仅计算净碳水（Net Carbs \= Total Carbs \- Fiber） 3。  
+* **每日净碳水摄入上限**：严格控制在 **20 \- 50 克 / 天** 3。
+* **成分与来源强制要求**：这 20-50 克的额度绝对不能来源于任何形式的淀粉（大米、土豆）或单双糖类（水果、蔗糖）。其唯一的合法来源必须是大量摄入的非淀粉类高纤维蔬菜（如菠菜、西蓝花、芹菜、羽衣甘蓝）中所含的隐形碳水化合物，以及极低热量调味品中不可避免的微量碳水 3。在计算时，不被肠道吸收的膳食纤维应从总碳水中扣除，仅计算净碳水（Net Carbs \= Total Carbs \- Fiber） 3。
 * **生化越界后果**：即使是轻微的碳水化合物超标，也会导致胰腺 β 细胞迅速释放胰岛素。胰岛素不仅是合成代谢激素，更是强效的脂解抑制剂。血糖与胰岛素的同步上升会瞬间关闭脂肪细胞释放游离脂肪酸（FFA）的通道（Lipolysis），直接阻断身体进入深度脂肪氧化的代谢通路，彻底破坏极速减脂的生理环境 6。
 
 ### **脂肪生理红线 (Fat Red Line)**
 
-* **每日总脂肪摄入上限**：严格控制在 **10 \- 20 克 / 天** 12。  
-* **生理功能底线警戒**：尽管目标是限制脂肪，但每日脂肪总摄入**绝对不得低于 10 克**。  
-* **机制解析与双向限制后果**：  
-  * **为何必须设立下限**：脂肪并非越低越好。肝胆系统的正常运作极度依赖于膳食脂肪的存在。胆囊（Gallbladder）需要每天至少约 10 克（约 0.4 g/kg LBM）的外源性脂肪刺激，才能触发胆囊收缩素（CCK）的分泌，进而正常收缩并排泄胆汁参与消化。长期完全零脂肪摄入会导致胆汁在胆囊内严重淤积，引发胆汁酸浓度失衡，从而在短时间内极大地增加胆结石（Gallstones）形成的临床风险。同时，一定量的脂肪是维持脂溶性维生素（A、D、E、K）吸收以及基础类固醇激素合成的生化底线 3。  
+* **每日总脂肪摄入上限**：严格控制在 **10 \- 20 克 / 天** 12。
+* **生理功能底线警戒**：尽管目标是限制脂肪，但每日脂肪总摄入**绝对不得低于 10 克**。
+* **机制解析与双向限制后果**：
+  * **为何必须设立下限**：脂肪并非越低越好。肝胆系统的正常运作极度依赖于膳食脂肪的存在。胆囊（Gallbladder）需要每天至少约 10 克（约 0.4 g/kg LBM）的外源性脂肪刺激，才能触发胆囊收缩素（CCK）的分泌，进而正常收缩并排泄胆汁参与消化。长期完全零脂肪摄入会导致胆汁在胆囊内严重淤积，引发胆汁酸浓度失衡，从而在短时间内极大地增加胆结石（Gallstones）形成的临床风险。同时，一定量的脂肪是维持脂溶性维生素（A、D、E、K）吸收以及基础类固醇激素合成的生化底线 3。
   * **为何必须设立上限**：每一克膳食脂肪不仅带来高达 9 千卡的热量，由于其分子结构，外源性脂肪在血液中会优先于体内储存的体脂肪被线粒体氧化消耗。如果脂肪摄入超出 20 克，身体将转而燃烧刚吃进去的脂肪，而非消耗目标皮下脂肪。将每日脂肪死死限制在 20 克以内（这其中有至少一半将由下文强制要求的 EPA/DHA 鱼油补充剂占据），才能迫使机体制造出最大的内源性体脂氧化缺口 3。
 
 ## **强制性临床微量营养素与电解质协议 (Mandatory Micronutrients & Electrolytes)**
@@ -80,30 +80,30 @@ PSMF 在临床本质上可以被视为一种“剔除了膳食脂肪的生酮饮
 
 在完全切断日常肉类脂肪和植物油来源后，身体将丧失合成细胞膜和抗炎介质所必需的长链多不饱和脂肪酸（Omega-3）。
 
-* **精确剂量限定**：每日目标应以 **EPA + DHA 有效成分总量** 计算，通常需达到 **3,000–5,000 毫克/天**。若使用普通鱼油胶囊，常需约 **6–10 克鱼油胶囊总重量** 才能覆盖有效成分；若使用高浓度产品，则按标签中 EPA/DHA 含量换算粒数。  
-* **制剂形式与脂肪红线**：PSMF 期间优先选择 **TG / rTG 型鱼油**，避免依赖高脂餐乳化的 EE 型鱼油。所有鱼油胶囊带入的物理脂肪重量必须计入每日 **20 克脂肪红线**，但它同时也是维持胆囊排空与必需脂肪酸供给的关键底座。  
+* **精确剂量限定**：每日目标应以 **EPA + DHA 有效成分总量** 计算，通常需达到 **3,000–5,000 毫克/天**。若使用普通鱼油胶囊，常需约 **6–10 克鱼油胶囊总重量** 才能覆盖有效成分；若使用高浓度产品，则按标签中 EPA/DHA 含量换算粒数。
+* **制剂形式与脂肪红线**：PSMF 期间优先选择 **TG / rTG 型鱼油**，避免依赖高脂餐乳化的 EE 型鱼油。所有鱼油胶囊带入的物理脂肪重量必须计入每日 **20 克脂肪红线**，但它同时也是维持胆囊排空与必需脂肪酸供给的关键底座。
 * **匮乏的生理学后果**：在无脂干预期间，拒绝补充 EPA/DHA 将导致细胞膜流动性发生结构性损伤，引发强烈的全身系统性炎症反应，显著增加心血管系统在高压下的应激风险，并可能导致神经递质传递受阻、情绪极度低落以及严重的皮肤干裂脱落 1。
 
 ### **4.2 核心电解质干预协议 (Sodium, Potassium, Magnesium, Calcium)**
 
 极低碳水化合物饮食具有强烈的药物级利尿（Diuresis）效应。当碳水摄入不足 50 克时，循环胰岛素水平处于绝对底线。胰岛素的缺失会指令肾脏停止重吸收，并大量排泄血清中的钠离子（Na+）。水分会不可避免地跟随着钠离子被冲刷出体外，导致血容量骤降。随着钠的大量流失，身体的渗透压代偿机制会连带排泄细胞内的钾（K+）和镁（Mg2+）以试图维持离子平衡 11。如果不进行主动的、甚至看似超量的电解质干预，机体将迅速面临代谢崩溃。
 
-* **钠 (Sodium / Na)**:  
-  * **精确剂量**：每日必须额外摄入 **3,000 \- 5,000 毫克** 的钠元素 11。这等同于每天需要摄入远超普通人认知的大量食盐（如直接服用含有 50% NaCl 的泛盐或喜马拉雅海盐），或者饮用高浓度盐水甚至肉汤 17。  
-  * **匮乏的生理学后果**：钠是维系细胞外液渗透压和全身血容量的绝对核心。钠流失导致的低血容量会引发极其严重的直立性低血压（起立时眼前发黑、晕眩）、持续性偏头痛、极度的心智疲劳，以及广为人知的“酮症流感”（Keto Flu）症状集合 11。  
-* **钾 (Potassium / K)**:  
-  * **精确剂量**：每日需额外摄入约 **1,000 毫克** 钾元素，并结合富钾蔬菜（如菠菜）使整体状态贴近生理需求。专门补钾时优先选择 **柠檬酸钾** 或 **葡萄糖酸钾**；低钠盐/代盐若含氯化钾，仅适合少量、分次、随餐或溶于食物使用，禁止空腹一次性大剂量吞服。  
-  * **匮乏的生理学后果**：钾是维持细胞内液容量、静息膜电位以及神经冲动传递的关键阳离子。钠钾泵（Na+/K+ pump）的电位失衡将直接导致严重的肌肉无力、深层肌肉酸痛，更致命的是会引发心脏电传导异常，导致心律不齐（Arrhythmias）甚至急性心力衰竭 11。  
-* **镁 (Magnesium / Mg)**:  
-  * **精确剂量**：每日 **400–500 毫克元素镁**。首选高吸收率的氨基酸螯合形式，尤其是睡前使用的甘氨酸镁；白天疲劳明显者可考虑苹果酸镁。柠檬酸镁可用但有轻度泻药效应；严禁使用低吸收率且极易引发剧烈渗透性腹泻的氧化镁 11。  
-  * **匮乏的生理学后果**：镁离子参与体内超过 300 种激酶和酶促反应，特别是线粒体内三磷酸腺苷（ATP）能量系统的合成与稳定。极低热量加之高蛋白饮食会导致肾脏对镁的排泄量呈代偿性增加 19。镁元素的严重匮乏不仅会导致顽固的夜间肌肉抽筋（Muscle Cramps）和神经系统过度兴奋（导致严重的失眠），甚至在细胞层面诱发外周胰岛素抵抗（Insulin Resistance），彻底破坏减脂期的代谢稳态 11。  
-* **钙 (Calcium / Ca)**:  
-  * **精确剂量**：每日 **600 \- 1,200 毫克元素钙** 20。由于 PSMF 几乎排除了常规富钙食物，除非大量食用脱脂干酪，否则必须通过补充剂摄入；首选不依赖胃酸的柠檬酸钙。大剂量钙默认与镁、铁、锌错开，若使用甘氨酸镁与柠檬酸钙且剂量已拆分，可在睡前小剂量同服作为条件性例外。  
+* **钠 (Sodium / Na)**:
+  * **精确剂量**：每日必须额外摄入 **3,000 \- 5,000 毫克** 的钠元素 11。这等同于每天需要摄入远超普通人认知的大量食盐（如直接服用含有 50% NaCl 的泛盐或喜马拉雅海盐），或者饮用高浓度盐水甚至肉汤 17。
+  * **匮乏的生理学后果**：钠是维系细胞外液渗透压和全身血容量的绝对核心。钠流失导致的低血容量会引发极其严重的直立性低血压（起立时眼前发黑、晕眩）、持续性偏头痛、极度的心智疲劳，以及广为人知的“酮症流感”（Keto Flu）症状集合 11。
+* **钾 (Potassium / K)**:
+  * **精确剂量**：每日需额外摄入约 **1,000 毫克** 钾元素，并结合富钾蔬菜（如菠菜）使整体状态贴近生理需求。专门补钾时优先选择 **柠檬酸钾** 或 **葡萄糖酸钾**；低钠盐/代盐若含氯化钾，仅适合少量、分次、随餐或溶于食物使用，禁止空腹一次性大剂量吞服。
+  * **匮乏的生理学后果**：钾是维持细胞内液容量、静息膜电位以及神经冲动传递的关键阳离子。钠钾泵（Na+/K+ pump）的电位失衡将直接导致严重的肌肉无力、深层肌肉酸痛，更致命的是会引发心脏电传导异常，导致心律不齐（Arrhythmias）甚至急性心力衰竭 11。
+* **镁 (Magnesium / Mg)**:
+  * **精确剂量**：每日 **400–500 毫克元素镁**。首选高吸收率的氨基酸螯合形式，尤其是睡前使用的甘氨酸镁；白天疲劳明显者可考虑苹果酸镁。柠檬酸镁可用但有轻度泻药效应；严禁使用低吸收率且极易引发剧烈渗透性腹泻的氧化镁 11。
+  * **匮乏的生理学后果**：镁离子参与体内超过 300 种激酶和酶促反应，特别是线粒体内三磷酸腺苷（ATP）能量系统的合成与稳定。极低热量加之高蛋白饮食会导致肾脏对镁的排泄量呈代偿性增加 19。镁元素的严重匮乏不仅会导致顽固的夜间肌肉抽筋（Muscle Cramps）和神经系统过度兴奋（导致严重的失眠），甚至在细胞层面诱发外周胰岛素抵抗（Insulin Resistance），彻底破坏减脂期的代谢稳态 11。
+* **钙 (Calcium / Ca)**:
+  * **精确剂量**：每日 **600 \- 1,200 毫克元素钙** 20。由于 PSMF 几乎排除了常规富钙食物，除非大量食用脱脂干酪，否则必须通过补充剂摄入；首选不依赖胃酸的柠檬酸钙。大剂量钙默认与镁、铁、锌错开，若使用甘氨酸镁与柠檬酸钙且剂量已拆分，可在睡前小剂量同服作为条件性例外。
   * **匮乏的生理学后果**：钙离子不仅是触发骨骼肌收缩和神经递质释放的扳机，充足的细胞内钙信号通道也对维持脂解过程起着关键的调节作用。在干预期间严重缺钙，会导致血液游离钙下降，触发甲状旁腺激素（PTH）分泌亢进。破骨细胞会被激活以溶解骨骼释放钙质，长期以往不仅诱发与镁缺乏相伴的抽搐，更会显著增加绝经后妇女及高强度运动员的骨质疏松（Osteoporosis）风险 11。
 
 ### **4.3 锌与基础综合维生素**
 
-* **锌 (Zinc)**：PSMF 期间建议在基础多维片之外，根据饮食结构补充 **15–30 毫克元素锌/天**。优先选择吡啶甲酸锌或双甘氨酸锌，随餐服用以降低胃部刺激；必须与高剂量钙剂、铁剂错开至少 2 小时。长期超过 40 毫克/天会显著增加继发性铜缺乏风险。  
+* **锌 (Zinc)**：PSMF 期间建议在基础多维片之外，根据饮食结构补充 **15–30 毫克元素锌/天**。优先选择吡啶甲酸锌或双甘氨酸锌，随餐服用以降低胃部刺激；必须与高剂量钙剂、铁剂错开至少 2 小时。长期超过 40 毫克/天会显著增加继发性铜缺乏风险。
 * **综合维生素 (Multivitamin)**：每日 1 粒全谱复合维生素作为兜底，优先安排在全天最大一餐餐后服用，以促进脂溶性维生素和 B 族维生素吸收。避免糖豆/软糖维生素；服用多维片的同餐不宜再叠加高剂量单体矿物质，以免钙、镁、锌、铁等相互竞争吸收。
 
 注：本节为核心协议总纲；具体到用户已购买保健品时，应以包装标签中的每份含量、化学形式和警示语为准，结合微量元素/电解质专项指南进行剂量换算与服用时机安排。
@@ -116,8 +116,8 @@ PSMF 带来的极速脂肪氧化不可避免地会受到人体内建的、历经
 
 **核心代谢重置干预定义：**
 
-* **Free Meal（自由餐）**：指的是一次不严格计量卡路里的常规饮食。其临床核心作用在于释放累积的心理剥夺感，防止长期的饮食压抑最终演变为暴食症（Binge Eating Disorder），从而提高依从性。它绝非无节制的暴饮暴食，而是让受试者恢复对饮食的控制感 7。  
-* **Refeed（高碳水日/重新进食）**：这是一种具有极强目的性的生理学重置干预，特征为极高碳水化合物、中等蛋白质、极低脂肪。研究表明，相比于脂肪，大量的碳水化合物刺激能够成倍地引发胰岛素激增，并极其有效地刺激脂肪细胞重新合成并大量分泌瘦素，从而强行重启甲状腺 T4 向 T3 的转化，加速交感神经兴奋，并重新填满耗竭的肝脏和肌肉糖原储备 7。  
+* **Free Meal（自由餐）**：指的是一次不严格计量卡路里的常规饮食。其临床核心作用在于释放累积的心理剥夺感，防止长期的饮食压抑最终演变为暴食症（Binge Eating Disorder），从而提高依从性。它绝非无节制的暴饮暴食，而是让受试者恢复对饮食的控制感 7。
+* **Refeed（高碳水日/重新进食）**：这是一种具有极强目的性的生理学重置干预，特征为极高碳水化合物、中等蛋白质、极低脂肪。研究表明，相比于脂肪，大量的碳水化合物刺激能够成倍地引发胰岛素激增，并极其有效地刺激脂肪细胞重新合成并大量分泌瘦素，从而强行重启甲状腺 T4 向 T3 的转化，加速交感神经兴奋，并重新填满耗竭的肝脏和肌肉糖原储备 7。
 * **Diet Break（完全休息期）**：长达 1 到 2 周的战略性热量恢复期。在此期间，受试者必须将每日总热量大幅提升至当前的维护热量水平（Maintenance Calories，即 TDEE），并且总碳水化合物每日绝不能低于 150 克。大量临床研究证实，战略性的饮食中断不仅能彻底逆转代谢适应（Adaptive Thermogenesis），消除所有的荷尔蒙抑制状态，还能为下一次深度的极低热量干预奠定神经内分泌基础，避免陷入溜溜球效应（Yo-yo Dieting）7。
 
 以下表格规定了各大分类人群精确的重置时间表与量化建议，违背此时间表将导致严重的生理耗竭：
@@ -138,35 +138,6 @@ PSMF 带来的极速脂肪氧化不可避免地会受到人体内建的、历经
 
 在 PSMF 期间，运动干预必须遵循以下极其严苛的红线协议：
 
-1. **训练容量（Volume）与频率（Frequency）的战略性削减**：临床实验与实践经验得出绝对一致的结论，在维持原有肌肉群的前提下，训练容量和频率必须大幅削减至维护期正常水平的三分之一（即砍掉原有的 66% 训练量）。举例而言，如果受试者在热量充盈期每周进行 4 次、每次针对某肌肉群进行 4-6 组的高强度训练，在 PSMF 期间，必须毫不犹豫地将其缩减至每周仅训练 2 次，每次仅进行 1-2 组的主力做功 17。目标仅仅是“触发生理信号”，而非累积代谢疲劳。  
-2. **训练强度（Intensity）的绝对维持**：这是整个运动处方中不可触碰的最核心底线。此处的“强度”特指生物力学上的绝对负荷，即杠铃上的重量负重。在将组数和频率大幅削减的同时，原先使用的极限重量（例如 8RM 的深蹲重量）必须尽最大可能得到维持。维持极高的机械张力负荷，能够向神经肌肉系统发送出最强烈的“生存级维持信号”，强行告知基因表达层面：骨骼肌网络仍被外界环境极度需要，从而在内分泌层面强制切断身体将这部分肌肉分解用作能量燃料的企图 17。  
+1. **训练容量（Volume）与频率（Frequency）的战略性削减**：临床实验与实践经验得出绝对一致的结论，在维持原有肌肉群的前提下，训练容量和频率必须大幅削减至维护期正常水平的三分之一（即砍掉原有的 66% 训练量）。举例而言，如果受试者在热量充盈期每周进行 4 次、每次针对某肌肉群进行 4-6 组的高强度训练，在 PSMF 期间，必须毫不犹豫地将其缩减至每周仅训练 2 次，每次仅进行 1-2 组的主力做功 17。目标仅仅是“触发生理信号”，而非累积代谢疲劳。
+2. **训练强度（Intensity）的绝对维持**：这是整个运动处方中不可触碰的最核心底线。此处的“强度”特指生物力学上的绝对负荷，即杠铃上的重量负重。在将组数和频率大幅削减的同时，原先使用的极限重量（例如 8RM 的深蹲重量）必须尽最大可能得到维持。维持极高的机械张力负荷，能够向神经肌肉系统发送出最强烈的“生存级维持信号”，强行告知基因表达层面：骨骼肌网络仍被外界环境极度需要，从而在内分泌层面强制切断身体将这部分肌肉分解用作能量燃料的企图 17。
 3. **心肺训练（Cardio）的严厉限制**：在 PSMF 期间，极度反对并劝退任何形式的高强度间歇训练（HIIT）以及过长、过度的恒速有氧运动。过量的有氧运动在这种极度低卡路里和糖原剥夺状态下，非但不能有效增加脂肪动员，反而会引发极端的系统性疲劳，导致甲状腺功能进一步下调，甚至在微观层面上严重阻碍力量训练后肌纤维的微损伤修复进程。唯一被允许且推荐的，是轻度至中度的非正式步行（通过增加 NEAT \- 非运动性热量消耗），以最低的神经疲劳代价来维持身体的活动水平 9。
-
-#### **引用的著作**
-
-1. rapid fat loss revisited: lyle mcdonald's updated insights on protein-sparing modified fasts \- Apple Podcasts, 访问时间为 五月 2, 2026， [https://podcasts.apple.com/us/podcast/rapid-fat-loss-revisited-lyle-mcdonalds-updated-insights/id1619611966?i=1000722792385](https://podcasts.apple.com/us/podcast/rapid-fat-loss-revisited-lyle-mcdonalds-updated-insights/id1619611966?i=1000722792385)  
-2. Lyle McDonald \- The Rapid Fat Loss Handbook \- Googleapis.com, 访问时间为 五月 2, 2026， [https://storage.googleapis.com/wzukusers/user-22912051/documents/579912fc07448BGNyoTN/Lyle%20McDonald%20-%20The%20Rapid%20Fat%20Loss%20Handbook.pdf](https://storage.googleapis.com/wzukusers/user-22912051/documents/579912fc07448BGNyoTN/Lyle%20McDonald%20-%20The%20Rapid%20Fat%20Loss%20Handbook.pdf)  
-3. Protein Sparing Modified Fast (PSMF): Crash Diet or Miracle Weight Loss?, 访问时间为 五月 2, 2026， [https://optimisingnutrition.com/psmf/](https://optimisingnutrition.com/psmf/)  
-4. Lyle McDonald's Rapid Fatloss Handbook: Before and After, Results, Review \- PowerliftingToWin, 访问时间为 五月 2, 2026， [https://www.powerliftingtowin.com/rapid-fatloss-handbook-before-and-after-results-review/](https://www.powerliftingtowin.com/rapid-fatloss-handbook-before-and-after-results-review/)  
-5. Lyle McDonald's Rapid Fat Loss Program: questions and advice (repost because original was confusing people). : r/Fitness \- Reddit, 访问时间为 五月 2, 2026， [https://www.reddit.com/r/Fitness/comments/1e8xxd/lyle\_mcdonalds\_rapid\_fat\_loss\_program\_questions/](https://www.reddit.com/r/Fitness/comments/1e8xxd/lyle_mcdonalds_rapid_fat_loss_program_questions/)  
-6. lyle aug 17 \- Sigma Nutrition, 访问时间为 五月 2, 2026， [https://sigmanutrition.com/wp-content/uploads/2016/04/Ep-193-Lyle-McDonald.pdf](https://sigmanutrition.com/wp-content/uploads/2016/04/Ep-193-Lyle-McDonald.pdf)  
-7. Diet Breaks : r/xxfitness \- Reddit, 访问时间为 五月 2, 2026， [https://www.reddit.com/r/xxfitness/comments/apjotz/diet\_breaks/](https://www.reddit.com/r/xxfitness/comments/apjotz/diet_breaks/)  
-8. Explain like I'm 5 on how to Carbo load/refeed? : r/Fitness \- Reddit, 访问时间为 五月 2, 2026， [https://www.reddit.com/r/Fitness/comments/1sdbfx/explain\_like\_im\_5\_on\_how\_to\_carbo\_loadrefeed/](https://www.reddit.com/r/Fitness/comments/1sdbfx/explain_like_im_5_on_how_to_carbo_loadrefeed/)  
-9. My experience with Lyle Mcdonald's Ultimate Diet 2.0 : r/naturalbodybuilding \- Reddit, 访问时间为 五月 2, 2026， [https://www.reddit.com/r/naturalbodybuilding/comments/vzqj8u/my\_experience\_with\_lyle\_mcdonalds\_ultimate\_diet\_20/](https://www.reddit.com/r/naturalbodybuilding/comments/vzqj8u/my_experience_with_lyle_mcdonalds_ultimate_diet_20/)  
-10. PSMF Diet Plan and Progress Tracker | PDF \- Scribd, 访问时间为 五月 2, 2026， [https://fr.scribd.com/document/343812550/PSMF-Diet-Calculator-v1-0](https://fr.scribd.com/document/343812550/PSMF-Diet-Calculator-v1-0)  
-11. Precision PSMF Calculator: Tailor Your Macros for Optimal Results \- Optimising Nutrition, 访问时间为 五月 2, 2026， [https://optimisingnutrition.com/psmf-calculator/](https://optimisingnutrition.com/psmf-calculator/)  
-12. PSMF Diet Plan and Progress Tracker | PDF \- Scribd, 访问时间为 五月 2, 2026， [https://www.scribd.com/document/343812550/PSMF-Diet-Calculator-v1-0](https://www.scribd.com/document/343812550/PSMF-Diet-Calculator-v1-0)  
-13. Diet Review \- Lyle McDonald's RFL Diet \- 20 lb in 40 days : r/Fitness \- Reddit, 访问时间为 五月 2, 2026， [https://www.reddit.com/r/Fitness/comments/bmamh1/diet\_review\_lyle\_mcdonalds\_rfl\_diet\_20\_lb\_in\_40/](https://www.reddit.com/r/Fitness/comments/bmamh1/diet_review_lyle_mcdonalds_rfl_diet_20_lb_in_40/)  
-14. How Many Carbs Should You Eat per Day to Lose Weight? \- Healthline, 访问时间为 五月 2, 2026， [https://www.healthline.com/nutrition/how-many-carbs-per-day-to-lose-weight](https://www.healthline.com/nutrition/how-many-carbs-per-day-to-lose-weight)  
-15. The Rapid Fat Loss Handbook: A Scientific Approach to Crash Dieting \- Goodreads, 访问时间为 五月 2, 2026， [https://www.goodreads.com/en/book/show/442692.The\_Rapid\_Fat\_Loss\_Handbook](https://www.goodreads.com/en/book/show/442692.The_Rapid_Fat_Loss_Handbook)  
-16. The GLP-1 Solution \- dokumen.pub, 访问时间为 五月 2, 2026， [https://dokumen.pub/download/the-glp-1-solution.html](https://dokumen.pub/download/the-glp-1-solution.html)  
-17. Rapid Fat Loss Diet, what to expect? : r/Fitness \- Reddit, 访问时间为 五月 2, 2026， [https://www.reddit.com/r/Fitness/comments/6y2ao6/rapid\_fat\_loss\_diet\_what\_to\_expect/](https://www.reddit.com/r/Fitness/comments/6y2ao6/rapid_fat_loss_diet_what_to_expect/)  
-18. From Food Supplements to Functional Foods: Emerging Perspectives on Post-Exercise Recovery Nutrition \- PMC \- NIH, 访问时间为 五月 2, 2026， [https://pmc.ncbi.nlm.nih.gov/articles/PMC11643565/](https://pmc.ncbi.nlm.nih.gov/articles/PMC11643565/)  
-19. Nutrient Reference Values for Australia and New Zealand Including Recommended Dietary Intakes | NHMRC, 访问时间为 五月 2, 2026， [https://www.nhmrc.gov.au/sites/default/files/images/nutrient-refererence-dietary-intakes.pdf](https://www.nhmrc.gov.au/sites/default/files/images/nutrient-refererence-dietary-intakes.pdf)  
-20. DASH diet: Sample menus \- Mayo Clinic, 访问时间为 五月 2, 2026， [https://www.mayoclinic.org/healthy-lifestyle/nutrition-and-healthy-eating/in-depth/dash-diet/art-20047110](https://www.mayoclinic.org/healthy-lifestyle/nutrition-and-healthy-eating/in-depth/dash-diet/art-20047110)  
-21. lyle mcdonald: rapid fat loss evolved- lyle's updated approach to dropping body fat fast | ep. 185 \- Apple Podcasts, 访问时间为 五月 2, 2026， [https://podcasts.apple.com/es/podcast/lyle-mcdonald-rapid-fat-loss-evolved-lyles-updated/id1619611966?i=1000732965819](https://podcasts.apple.com/es/podcast/lyle-mcdonald-rapid-fat-loss-evolved-lyles-updated/id1619611966?i=1000732965819)  
-22. Science Behind Carb Refeeds on a Deficit : r/naturalbodybuilding \- Reddit, 访问时间为 五月 2, 2026， [https://www.reddit.com/r/naturalbodybuilding/comments/19fdf6x/science\_behind\_carb\_refeeds\_on\_a\_deficit/](https://www.reddit.com/r/naturalbodybuilding/comments/19fdf6x/science_behind_carb_refeeds_on_a_deficit/)  
-23. Case Study: Unfavorable But Transient Physiological Changes During Contest Preparation in a Drug-Free Male Bodybuilder | Request PDF \- ResearchGate, 访问时间为 五月 2, 2026， [https://www.researchgate.net/publication/318890563\_Case\_Study\_Unfavorable\_But\_Transient\_Physiological\_Changes\_During\_Contest\_Preparation\_in\_a\_Drug-Free\_Male\_Bodybuilder](https://www.researchgate.net/publication/318890563_Case_Study_Unfavorable_But_Transient_Physiological_Changes_During_Contest_Preparation_in_a_Drug-Free_Male_Bodybuilder)  
-24. 6 Steps to a Building a Winning Bodybuilding Contest Prep \- Revive Stronger, 访问时间为 五月 2, 2026， [https://revivestronger.com/6-step-bodybuilding-contest-prep/](https://revivestronger.com/6-step-bodybuilding-contest-prep/)  
-25. losing the last 10 lbs of fat \- Refeed time? : r/Fitness \- Reddit, 访问时间为 五月 2, 2026， [https://www.reddit.com/r/Fitness/comments/1dzdn0/losing\_the\_last\_10\_lbs\_of\_fat\_refeed\_time/](https://www.reddit.com/r/Fitness/comments/1dzdn0/losing_the_last_10_lbs_of_fat_refeed_time/)  
-26. Minimum calories, cutting, and cycling \- Nutrition \- GymnasticBodies, 访问时间为 五月 2, 2026， [https://www.gymnasticbodies.com/forum/topic/15914-minimum-calories-cutting-and-cycling/](https://www.gymnasticbodies.com/forum/topic/15914-minimum-calories-cutting-and-cycling/)

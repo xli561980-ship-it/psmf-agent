@@ -53,7 +53,7 @@ logger = logging.getLogger(__name__)
 _RAG_SOURCE_TRAINING_GUIDE: Final[str] = "psmf_training_guide.md"
 _RAG_SOURCE_SYMPTOM_MATRIX: Final[str] = "symptom_diagnostic_matrix.md"
 _RAG_SOURCE_MICRONUTRIENT_GUIDE: Final[str] = (
-    "PSMF极低碳水与极低热量状态下的微量元素及电解质临床补充指南 36af35d544e5801c9fdef82149191af7.md"
+    "psmf_micronutrient_electrolyte_guide.md"
 )
 # food_db 源自 ``psmf_food_database.md`` 入库；睡前复盘强制检索该库
 _FOOD_DB_LABEL: Final[str] = "psmf_food_database.md（food_db）"
