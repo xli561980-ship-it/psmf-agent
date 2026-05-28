@@ -1,14 +1,66 @@
-# PSMF Agent
+# PSMF Agent：面向健康管理场景的 AI 售前方案 Demo
 
-PSMF Agent is a Gemini-powered coaching assistant for PSMF / fat-loss tracking. It includes:
+这是一个面向健康管理、减脂陪伴和营养咨询场景的 AI Agent 原型项目。项目以 PSMF（Protein Sparing Modified Fast）减脂协议为业务知识底座，通过 Gemini、RAG、本地用户记忆、多渠道入口和安全提醒机制，演示如何把专业知识库转化为一个可对话、可持续跟进、可产品化落地的智能顾问。
 
-- a terminal chat entrypoint in `main.py`
-- a Telegram bot entrypoint in `telegram_bot.py`
-- a Streamlit demo UI in `app.py`
-- local memory/profile management
-- local RAG indexing over the bundled PSMF protocol, food database, training guide, and symptom matrix
+我构建这个项目的目的，不只是做一个聊天机器人，而是用一个完整 Demo 展示售前岗位需要的核心能力：理解业务场景、拆解客户需求、快速搭建 PoC、讲清技术架构、说明客户价值，并把 AI 能力包装成客户能理解、能评估、能采购的解决方案。
 
-## Setup
+## 适用于售前岗位申请的项目描述
+
+如果在简历或面试中介绍这个项目，可以这样表达：
+
+> 我做过一个健康管理场景的 AI Agent Demo，目标是模拟企业客户希望用 AI 提升营养咨询、减脂陪伴和用户运营效率的需求。这个项目不是单纯调用大模型接口，而是把专业减脂协议、食物数据库、训练指南和症状风险规则整理成知识库，通过 RAG 提供可追溯的专业回答，并结合用户长期档案、每日打卡、补剂提醒和多渠道入口，形成一个接近真实业务闭环的解决方案原型。
+>
+> 从售前角度看，我会把它包装成一个“AI 健康顾问解决方案 PoC”：前端可以用 Streamlit 做快速演示，Telegram Bot 可以展示私域触达和持续运营能力，终端入口可以用于技术验证。客户价值包括降低人工咨询成本、提升用户留存、沉淀健康数据、支持个性化服务，以及通过安全护栏降低不当建议风险。这个项目体现了我把业务问题转成可演示方案、把技术能力转成客户价值、并围绕落地场景进行讲解的能力。
+
+## 项目亮点
+
+- **业务场景清晰**：围绕减脂陪伴、饮食记录、营养答疑、训练建议和安全提醒构建完整用户流程。
+- **适合售前演示**：同时支持 Streamlit 网页 Demo、Telegram Bot 和终端对话，便于面向不同客户展示。
+- **RAG 知识增强**：将 PSMF 协议、食物数据库、训练指南、症状风险矩阵等资料作为本地知识库，减少纯大模型幻觉。
+- **用户长期记忆**：通过 `user_profiles.json` 维护用户体重、体脂、Category、蛋白质目标、补剂打卡、对话历史等状态。
+- **安全边界意识**：针对胸痛、晕厥、严重不适、低血糖风险等场景提供安全提醒，避免把高风险健康问题当作普通减脂建议处理。
+- **产品化思维**：包含环境变量配置、示例配置、日志脱敏、定时任务和多入口复用，接近真实 PoC 交付形态。
+
+## 售前讲解思路
+
+面向招聘官或客户，可以按照下面的逻辑讲：
+
+1. **客户痛点**：健康管理服务依赖人工顾问，响应慢、成本高、服务标准不稳定，用户长期打卡和复盘也难持续。
+2. **解决方案**：用 AI Agent 承担基础咨询、规则解释、饮食记录、每日复盘和提醒，把人工顾问从重复问题中释放出来。
+3. **技术路径**：大模型负责自然语言理解和生成，RAG 负责引入专业知识库，用户记忆负责长期个性化，多渠道入口负责触达。
+4. **业务价值**：降低服务成本，提高响应速度和用户粘性，同时沉淀结构化健康数据，为后续运营和个性化服务提供基础。
+5. **落地方式**：先做 PoC 验证典型用户旅程，再接入企业知识库、CRM、会员系统或私域渠道，逐步扩展到正式产品。
+
+## 功能模块
+
+- `main.py`：终端版对话入口，适合快速验证 Agent 能力。
+- `telegram_bot.py`：Telegram Bot 入口，展示私域触达、主动提醒和持续陪伴能力。
+- `app.py`：Streamlit 网页 Demo，适合售前演示和招聘面试展示。
+- `psmf_engine.py`：核心 Agent 逻辑，包含对话编排、健康规则、RAG 调用和多模态处理入口。
+- `rag_system.py`：本地知识库索引与检索。
+- `memory_manager.py`：用户档案、打卡记录、补剂状态、历史记忆管理。
+- `system_prompt.txt`：Agent 角色和行为约束。
+- `psmf_*.md` / `symptom_diagnostic_matrix.md`：业务知识资料。
+
+## 技术架构
+
+```text
+用户
+  |
+  |-- Streamlit Web Demo
+  |-- Telegram Bot
+  |-- Terminal CLI
+        |
+        v
+GeminiPSMFAgent
+  |
+  |-- Gemini API：自然语言理解、生成、图片信息提取
+  |-- RAG System：PSMF 协议、食物库、训练指南、症状矩阵
+  |-- Memory Manager：用户档案、每日记录、补剂状态、对话历史
+  |-- Safety Rules：高风险症状识别与安全提醒
+```
+
+## 快速开始
 
 ```bash
 python3 -m venv .venv
@@ -17,33 +69,52 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-Fill in `.env` with your Gemini API key and, if using Telegram, your bot token:
+编辑 `.env`，填写必要配置：
 
 ```bash
 GEMINI_API_KEY=...
 TELEGRAM_BOT_TOKEN=...
 ```
 
-## Run
+## 运行方式
 
-Terminal:
+终端对话：
 
 ```bash
 python main.py
 ```
 
-Streamlit demo:
+网页 Demo：
 
 ```bash
 streamlit run app.py
 ```
 
-Telegram bot:
+Telegram Bot：
 
 ```bash
 python telegram_bot.py
 ```
 
-## Data And Secrets
+## 演示建议
 
-Do not commit `.env`, local vector indexes, virtual environments, caches, or `user_profiles.json`. These files may contain secrets, generated state, or personal health data.
+面试或售前展示时，建议优先演示 Streamlit 版本：
+
+1. 登录网页 Demo，模拟一个新用户描述体重、体脂、饮食状态和目标。
+2. 展示 Agent 如何完成基础信息收集、Category 判断和蛋白质目标建议。
+3. 输入一条饮食打卡，展示它如何结合用户档案给出反馈。
+4. 触发“今日复盘”或 `/summary`，展示长期记忆和结构化复盘能力。
+5. 输入一个高风险症状，比如胸痛、晕厥、严重乏力，展示安全提醒机制。
+6. 最后从售前角度总结：这个 Demo 可以如何扩展成企业健康管理、私域运营或智能客服解决方案。
+
+## 数据与安全
+
+本项目不应提交以下文件：
+
+- `.env` 和任何真实密钥
+- `user_profiles.json` 等真实用户健康数据
+- `chroma_db/` 本地向量库
+- `venv/`、`.venv/`、`__pycache__/` 等生成文件
+- 日志、缓存和临时目录
+
+注意：本项目用于 AI 应用原型和售前方案展示，不替代医生、营养师或医疗机构的专业判断。
