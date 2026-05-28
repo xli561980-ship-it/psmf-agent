@@ -2,7 +2,7 @@
 
 ## 项目定位
 
-PSMF Agent 是一个面向健康管理、减脂陪伴和营养咨询场景的 AI Agent 行业解决方案 PoC。项目围绕 PSMF 减脂协议，将 LLM、RAG 知识库、用户长期记忆、打卡复盘、多渠道入口和安全风险识别整合成一个可演示、可解释、可扩展的 AI 健康管理顾问原型。
+PSMF Agent 是一个面向健康管理、减脂陪伴和营养咨询场景的 Tool-Using Health Management Agent PoC。项目围绕 PSMF 减脂协议，将 LLM Planner、Tool Registry、RAG 知识库、用户长期记忆、打卡复盘、多渠道入口和 deterministic safety guardrail 整合成一个可演示、可解释、可扩展的 AI 健康管理顾问原型。
 
 它的重点不是展示单次聊天能力，而是验证 AI Agent 如何承接真实服务流程：用户建档、个性化建议、饮食 / 训练 / 补剂打卡、阶段复盘、私域触达和风险边界提示。
 
@@ -24,26 +24,45 @@ PSMF Agent 是一个面向健康管理、减脂陪伴和营养咨询场景的 AI
 
 ## 解决方案概述
 
-PSMF Agent 使用 Gemini 作为核心 LLM，结合 ChromaDB 本地 RAG 知识库和用户状态管理模块，将 PSMF 协议、食物数据库、训练指南、微量元素建议和症状风险矩阵转化为可对话的行业知识能力。RAG 入库采用 Markdown 标题语义切分，保留章节路径和来源元数据，方便解释检索结果来自哪一类专家知识。
+PSMF Agent 使用 `AgentOrchestrator` 管理一个 bounded ReAct-style tool loop。每轮对话会先执行 deterministic safety pre-check；未触发 hard stop 时，系统读取用户档案，让 Planner 根据用户输入、工具 manifest 和 observation 选择下一步工具。工具执行后返回 `ToolResult`，并被记录为 `AgentStep`，Planner 可以继续 re-plan，直到进入 final response 和 memory persistence。
+
+```mermaid
+flowchart LR
+    U["User Input"] --> S["Safety Guardrail"]
+    S --> O["AgentOrchestrator"]
+    O --> P["Planner / Reasoner"]
+    P --> R["Tool Registry"]
+    R --> T["Tools"]
+    T --> OB["Observations"]
+    OB --> P
+    P --> F["Final Response"]
+    F --> M["Memory Persistence"]
+```
+
+Gemini 负责 planner decision、结构化抽取、图片信息理解和最终回复生成；ChromaDB 本地 RAG 知识库和 `memory_manager.py` 则作为工具底层服务。RAG 入库采用 Markdown 标题语义切分，保留章节路径和来源元数据，方便解释检索结果来自哪一类专家知识。
 
 系统支持三类入口：Streamlit Web Demo 用于完整用户旅程展示，Telegram Bot 用于私域触达和持续陪伴，CLI 用于技术验证和本地调试。Agent 会基于用户档案、历史打卡和当前输入生成上下文相关反馈，并对胸痛、晕厥、呼吸困难、严重乏力等高风险描述触发安全提醒。
+
+`psmf_engine.py` 现在仅作为 legacy compatibility wrapper 保留旧 `GeminiPSMFAgent` 名称；真实运行路径在 `agent/orchestrator.py`、`agent/planner.py` 和 `agent/*_tools.py`。
 
 ## 核心能力
 
 - **垂直知识问答**：基于 PSMF 协议、食物库、训练指南和症状矩阵进行回答。
 - **用户长期记忆**：记录用户档案、历史对话、饮食 / 训练打卡和补剂状态。
+- **工具调用架构**：PSMF 计算、RAG、记忆、饮食打卡、补剂打卡、总结和对话保存都通过 Tool Registry 调用。
+- **可调试 observation trace**：每个 `AgentStep` 记录公开摘要、`ToolCall` 和 `ToolResult`，便于演示与排错，但不暴露完整 chain-of-thought。
 - **连续服务流程**：支持每日打卡、阶段复盘和主动提醒。
 - **多渠道触达**：Web Demo 用于方案演示，Telegram 用于私域陪伴，CLI 用于技术验证。
-- **安全风险识别**：对胸痛、晕厥、呼吸困难、严重乏力等高风险症状触发提醒。
+- **安全风险识别**：对胸痛、晕厥、呼吸困难、意识模糊、心律异常等高风险症状执行 hard stop，停止饮食/训练建议并提示就医。
 
 ## Demo 演示流程
 
 1. 输入用户基础信息：性别、体重、体脂、目标和当前状态。
-2. Agent 判断阶段，估算关键指标并给出初始建议。
+2. Agent 通过工具抽取体征、计算 PSMF targets 并更新档案。
 3. 用户输入饮食、训练或补剂打卡。
 4. Agent 结合历史档案给出上下文相关反馈。
 5. 触发每日总结或阶段复盘，展示长期记忆能力。
-6. 输入高风险症状，展示安全提醒和人工介入边界。
+6. 输入高风险症状，展示 deterministic safety guardrail 和人工介入边界。
 7. 总结方案如何扩展到企业健康管理、私域运营或智能客服场景。
 
 ## 业务价值

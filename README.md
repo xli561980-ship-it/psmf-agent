@@ -24,16 +24,17 @@
 
 ## 解决方案概述
 
-PSMF Agent 将健康管理场景拆解为一个可演示的 AI Agent 闭环：
+PSMF Agent 将健康管理场景拆解为一个可演示的 Tool-Using Agent / ReAct-style Agentic Workflow：
 
-- 使用 **Gemini / LLM** 负责自然语言理解、回答生成和图片信息提取。
-- 使用 **RAG 知识库** 承载 PSMF 协议、食物数据库、训练指南、微量元素建议和症状风险矩阵，并通过 Markdown 标题语义切分提升检索命中质量。
-- 使用 **用户长期记忆** 记录体重、体脂、Category、瘦体重估算、蛋白质目标、补剂打卡、饮食记录和对话历史。
-- 使用 **饮食 / 训练 / 补剂打卡** 支撑用户日常跟进、阶段复盘和服务连续性。
+- 使用 **AgentOrchestrator** 管理一轮 bounded tool loop：初始化状态、执行安全预检、读取用户档案、调用 planner、执行工具、吸收 observation、生成最终回复并持久化对话。
+- 使用 **Planner / Reasoner** 根据当前用户输入、用户档案、工具 manifest 和上一轮 observation 选择下一步工具，输出短的 `thought_summary`，不暴露完整 chain-of-thought。
+- 使用 **Tool Registry** 统一管理 PSMF 计算、RAG 检索、记忆读写、饮食打卡、补剂打卡、每日总结和对话保存等工具。
+- 使用 **RAG 知识库工具** 承载 PSMF 协议、食物数据库、训练指南、微量元素建议和症状风险矩阵，并通过 Markdown 标题语义切分提升检索命中质量。
+- 使用 **用户长期记忆工具** 记录体重、体脂、Category、瘦体重估算、蛋白质目标、补剂打卡、饮食记录和对话历史。
 - 使用 **Streamlit Web Demo** 展示完整用户旅程，适合方案沟通、客户验证和 PoC 演示。
 - 使用 **Telegram Bot** 展示私域触达、主动提醒、长周期陪伴和移动端交互能力。
 - 使用 **CLI** 支持快速技术验证和本地调试。
-- 使用 **安全风险识别规则** 对高风险症状触发提醒，引导用户优先就医或寻求专业帮助。
+- 使用 **deterministic safety guardrail** 在 agent loop 前对胸痛、胸闷、呼吸困难、晕厥、心律异常、意识模糊等高风险症状 hard stop，引导用户优先就医或寻求专业帮助。
 
 从售前视角看，该项目展示的是一个“垂直行业 AI 顾问解决方案”的最小可行形态：既能讲清客户问题，也能演示业务流程，还能说明大模型、RAG、记忆和安全边界如何组合成可落地方案。
 
@@ -57,12 +58,14 @@ flowchart TB
     TG["Telegram Bot<br/>私域触达与主动提醒"]
     CLI["CLI<br/>技术验证与本地调试"]
 
-    AGENT["GeminiPSMFAgent<br/>Agent 核心编排"]
-    DIALOG["对话理解与回复生成"]
-    RULES["业务规则判断<br/>Category / 蛋白质目标 / 打卡处理"]
-    RAG["RAG 检索<br/>标题语义切分 / 向量索引 / 来源过滤"]
-    MEMORY["长期记忆<br/>用户档案 / 每日记录 / 历史对话"]
-    SAFETY["安全层<br/>高风险症状识别 / 免责声明 / 人工介入建议"]
+    SAFETY["Deterministic Safety Guardrail<br/>hard stop before agent loop"]
+    ORCH["AgentOrchestrator<br/>bounded ReAct-style tool loop"]
+    PLANNER["Planner / Reasoner<br/>JSON action + public step summary"]
+    REGISTRY["Tool Registry<br/>ToolSpec / ToolCall / ToolResult"]
+    TOOLS["Agent Tools<br/>PSMF / RAG / Memory / Logs / Summary"]
+    OBS["Observations<br/>AgentStep trace for debugging"]
+    FINAL["Final Response<br/>professional persona"]
+    MEMORY["Memory Persistence<br/>profile / daily_logs / STM"]
 
     KB["知识库 Markdown<br/># / ## / ### 结构化章节"]
     PROFILE["user_profiles.json<br/>本地用户档案，不提交仓库"]
@@ -75,16 +78,56 @@ flowchart TB
     WEB --> AGENT
     TG --> AGENT
     CLI --> AGENT
-    AGENT --> DIALOG
-    AGENT --> RULES
-    AGENT --> RAG
-    AGENT --> MEMORY
-    AGENT --> SAFETY
-    RAG --> KB
-    RAG --> CACHE
+    AGENT["Agent Entry"] --> SAFETY
+    SAFETY --> ORCH
+    ORCH --> PLANNER
+    PLANNER --> REGISTRY
+    REGISTRY --> TOOLS
+    TOOLS --> OBS
+    OBS --> PLANNER
+    PLANNER --> FINAL
+    FINAL --> MEMORY
+    TOOLS --> KB
+    TOOLS --> CACHE
     MEMORY --> PROFILE
-    AGENT --> ENV
+    ORCH --> ENV
 ```
+
+### Agent Loop
+
+Runtime flow:
+
+```text
+User Input
+→ deterministic safety pre-check
+→ AgentOrchestrator
+→ get_user_profile
+→ Planner / Reasoner
+→ Tool Selection
+→ Tool Execution
+→ Observation
+→ optional re-plan
+→ Final Response
+→ save_conversation_turn
+```
+
+`AgentStep` trace records public summaries such as `extract_user_facts` or `search_psmf_knowledge`; it is useful for debugging and demos, but the final user reply does not expose private chain-of-thought.
+
+### Registered Tools
+
+- `check_safety_risk`: deterministic symptom risk check; hard-stop signals stop the loop.
+- `get_user_profile`: reads long-term profile, daily logs, supplement status, soft memories and recent conversation.
+- `extract_user_facts`: extracts structured facts from text and optional image.
+- `calculate_psmf_targets`: computes LBM, Category and protein target range.
+- `update_user_profile`: persists vitals, Category, protein targets, schedule preferences and strength status.
+- `log_food`: writes food check-ins to `daily_logs`.
+- `log_supplements`: writes supplement check-in status.
+- `update_supplement_products`: persists supplement label/product facts.
+- `search_psmf_knowledge`: retrieves protocol, training, micronutrient or symptom matrix knowledge.
+- `search_food_database`: retrieves food database chunks.
+- `generate_daily_summary`: returns today's macro, supplement and progress summary.
+- `generate_weekly_report`: returns a rolling seven-day report.
+- `save_conversation_turn`: persists the visible user/assistant turn.
 
 ## RAG 技术实现
 
@@ -105,10 +148,18 @@ flowchart TB
 
 | 文件 | 模块作用 | 在售前演示中的价值 |
 |---|---|---|
+| `agent/orchestrator.py` | Agent 主编排，执行 safety pre-check、planner/tool loop、observation 吸收和 memory persistence | 展示标准 Tool-Using Agent / ReAct-style workflow，而不是线性 if/else pipeline |
+| `agent/planner.py` | Planner / Gemini adapter，输出结构化 JSON action 与公开 step summary；支持 dry-run fallback | 展示 Reasoner、工具选择、有限轮 re-plan 与可测试运行 |
+| `agent/tool_registry.py` | 统一 ToolSpec / ToolCall / ToolResult 注册与执行 | 展示真实工具抽象，方便扩展企业工具或第三方系统 |
+| `agent/schemas.py` | AgentState、AgentStep、AgentContext 等结构 | 展示状态、观察、trace 和工具调用记录如何组织 |
+| `agent/safety.py` | 高风险症状 deterministic hard-stop guardrail | 说明医疗安全边界是前置护栏，不是普通业务路由 |
+| `agent/psmf_tools.py` | LBM、Category、蛋白质目标等 PSMF 计算工具 | 将专业计算从主流程抽离为可测试工具 |
+| `agent/memory_tools.py` | 用户档案、饮食、补剂、总结、对话保存等记忆工具 | 展示长期服务能力通过工具被 agent 调用 |
+| `agent/rag_tools.py` | PSMF 知识库和食物库检索工具 | 展示 RAG 是可选工具调用而非硬编码路由 |
 | `app.py` | Streamlit 网页入口，支持登录、聊天、侧栏用户档案、图片上传和复盘展示 | 用于方案沟通中演示完整用户旅程，让非技术角色直观看到方案效果 |
 | `telegram_bot.py` | Telegram Bot 入口，支持文本、图片、命令、调度器和主动提醒 | 展示私域触达、移动端服务和持续陪伴能力 |
 | `main.py` | CLI 入口，初始化 RAG 并启动终端对话 | 用于快速技术验证和本地调试，证明核心 Agent 不依赖单一 UI |
-| `psmf_engine.py` | Agent 核心编排，包含 Gemini 调用、体征提取、业务规则、RAG 门控和风险提示 | 展示如何把 LLM 能力与垂直业务规则结合，而不是只做通用聊天 |
+| `psmf_engine.py` | Legacy compatibility wrapper，保留旧 `GeminiPSMFAgent` 名称并委托给 `AgentOrchestrator` | 降低迁移成本，同时让新架构成为真实运行路径 |
 | `rag_system.py` | 基于 ChromaDB 的本地知识库索引和检索，支持 Markdown 标题语义切分、表格保留、来源过滤和 chunk metadata | 展示专家知识沉淀、可控问答、检索可解释性和行业知识增强能力 |
 | `memory_manager.py` | 管理用户档案、每日记录、补剂状态、历史对话和长期记忆 | 展示长期用户服务能力和个性化跟进能力 |
 | `system_prompt.txt` | Agent 角色、语气和行为边界 | 展示 Prompt 设计与行业角色定义能力 |
@@ -137,20 +188,20 @@ flowchart LR
 1. **输入用户基础信息**  
    示例：用户说明性别、体重、体脂、目标、当前饮食状态和训练习惯。
 
-2. **Agent 判断当前阶段并给出初始建议**  
-   展示系统如何估算 LBM、判断 Category、给出蛋白质目标和起步建议。
+2. **Agent 通过工具建档并给出初始建议**  
+   展示系统如何通过 `extract_user_facts`、`calculate_psmf_targets`、`update_user_profile` 估算 LBM、判断 Category、给出蛋白质目标和起步建议。
 
 3. **输入饮食或训练打卡**  
    示例：用户记录一餐食物、一次训练反馈或补剂状态。
 
-4. **Agent 基于历史记录给出反馈**  
-   展示系统如何读取用户档案和历史记录，给出上下文相关建议。
+4. **Agent 基于 memory tool 给出反馈**  
+   展示系统如何通过 `get_user_profile`、`generate_daily_summary` 读取用户档案和历史记录，给出上下文相关建议。
 
 5. **触发每日总结 / 阶段复盘**  
    输入“今日复盘”或 `/summary`，展示长期记忆、结构化总结和服务连续性。
 
-6. **输入高风险症状，展示安全提醒**  
-   示例：用户描述胸痛、晕厥、呼吸困难或严重乏力，展示安全边界和就医建议。
+6. **输入高风险症状，展示 deterministic hard stop**  
+   示例：用户描述胸痛、晕厥、呼吸困难或意识模糊。系统会在 tool loop 前 hard stop，不继续 RAG、饮食建议或训练建议。
 
 7. **总结行业扩展价值**  
    将 Demo 映射到企业健康管理、私域社群运营、线上营养咨询或智能客服场景，说明如何接入 CRM、会员系统、企业知识库和人工顾问工作台。
@@ -189,6 +240,12 @@ python telegram_bot.py
 
 ```bash
 python main.py
+```
+
+运行轻量 smoke test：
+
+```bash
+python scripts/smoke_test.py
 ```
 
 ## 安全与合规边界

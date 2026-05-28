@@ -7,10 +7,11 @@
 演示重点包括：
 
 - AI Agent 如何围绕具体业务流程工作，而不是只做单轮聊天。
+- Planner 如何选择工具，工具如何返回 observation，最终回复如何基于 observation 生成。
 - RAG 如何承载 PSMF 协议、食物库、训练指南和症状风险矩阵。
 - 用户长期记忆如何支持个性化跟进和阶段复盘。
 - 多渠道入口如何对应 Web 演示、私域触达和本地验证。
-- 健康场景中如何处理高风险症状和安全边界。
+- 健康场景中如何用 deterministic safety guardrail 处理高风险症状和安全边界。
 
 ## 演示前准备
 
@@ -33,13 +34,13 @@
 
 ```mermaid
 flowchart LR
-    A["用户基础信息输入"] --> B["Agent 建档"]
-    B --> C["初始建议"]
-    C --> D["饮食 / 训练 / 补剂打卡"]
-    D --> E["长期记忆更新"]
-    E --> F["每日复盘"]
+    A["用户基础信息输入"] --> B["Safety Pre-check"]
+    B --> C["Planner selects tools"]
+    C --> D["Tool execution + observations"]
+    D --> E["Final response"]
+    E --> F["Memory persistence"]
     F --> G["高风险症状测试"]
-    G --> H["安全提醒"]
+    G --> H["Hard-stop safety reply"]
     H --> I["业务价值总结"]
 ```
 
@@ -54,17 +55,18 @@ flowchart LR
 观察点：
 
 - Agent 是否识别性别、体重、体脂和目标。
+- 可以说明此处对应 `extract_user_facts`、`calculate_psmf_targets`、`update_user_profile` 三类工具。
 - 是否围绕 PSMF 协议给出起步建议，而不是泛泛聊天。
 - 是否体现用户建档和后续跟进的基础。
 
 ### Step 2：Agent 判断阶段并给出初始建议
 
-演示时可以说明：这一阶段对应真实服务中的“初诊 / 建档 / 方案初始化”。Agent 会基于用户输入估算关键指标，并给出与当前阶段相关的建议。
+演示时可以说明：这一阶段对应真实服务中的“初诊 / 建档 / 方案初始化”。Agent 不再把计算逻辑塞在主流程里，而是由 Planner 选择 PSMF 工具，工具返回 observation，最终回复引用 observation 中的 Category 和蛋白质目标。
 
 观察点：
 
-- Category、蛋白质目标、执行注意事项等是否与业务规则相关。
-- 回答是否能体现专业知识库和规则判断，而不是纯自由生成。
+- Category、蛋白质目标、执行注意事项等是否来自工具结果。
+- 回答是否能体现工具调用、知识库和长期记忆，而不是纯自由生成。
 
 ### Step 3：输入饮食或训练打卡
 
@@ -76,7 +78,7 @@ flowchart LR
 
 观察点：
 
-- Agent 是否能将输入识别为打卡或状态反馈。
+- Agent 是否能将输入识别为打卡或状态反馈，并调用 `log_food` / `log_supplements`。
 - 是否结合用户档案输出饮食、训练或补剂相关建议。
 - 是否体现持续服务流程。
 
@@ -90,7 +92,7 @@ flowchart LR
 
 观察点：
 
-- Agent 是否能读取前文和用户档案。
+- Agent 是否能通过 `get_user_profile` 和 `generate_daily_summary` 读取前文、用户档案和今日摘要。
 - 建议是否具有上下文关联。
 - 是否体现普通 chatbot 缺少的长期跟进能力。
 
@@ -110,7 +112,7 @@ flowchart LR
 
 观察点：
 
-- 是否输出结构化总结。
+- 是否输出结构化总结，并可解释为 `generate_daily_summary` 或 `generate_weekly_report` 工具的 observation。
 - 是否体现历史记录、风险提示和下一步建议。
 - 是否适合映射到用户运营中的自动复盘、陪伴和留存提升。
 
@@ -124,8 +126,8 @@ flowchart LR
 
 观察点：
 
-- Agent 是否触发安全提醒。
-- 是否避免继续给普通减脂或训练建议。
+- Agent 是否在进入 RAG、饮食建议或训练建议前触发 hard stop。
+- 是否避免继续给普通减脂、热量或训练建议。
 - 是否引导用户寻求专业帮助。
 
 ### Step 7：业务价值总结
@@ -141,7 +143,7 @@ flowchart LR
 ## 关键观察点
 
 - Demo 是否围绕“业务流程”展开，而不是只展示问答。
-- 回答是否能体现知识库、记忆、规则和安全层的组合。
+- 回答是否能体现 Planner、Tool Registry、RAG、记忆和安全层的组合。
 - 多入口是否能对应不同落地场景：Web 展示、私域触达、CLI 验证。
 - 高风险症状是否触发合理边界，而不是被当作普通减脂反馈。
 
@@ -155,4 +157,4 @@ flowchart LR
 
 ## 风险边界说明
 
-PSMF Agent 是 AI 应用原型 / PoC，不替代医生、营养师或医疗机构。涉及胸痛、晕厥、呼吸困难、严重乏力、意识模糊等高风险症状时，应优先提示用户停止高风险行为并寻求专业帮助。
+PSMF Agent 是 AI 应用原型 / PoC，不替代医生、营养师或医疗机构。涉及胸痛、晕厥、呼吸困难、意识模糊、明显心律异常等高风险症状时，deterministic safety guardrail 会在 agent loop 前优先返回安全提醒，停止普通饮食和训练建议。
