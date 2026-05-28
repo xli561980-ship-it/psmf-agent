@@ -8,6 +8,7 @@ PSMF Agent — Streamlit 网页 Demo。
 
 from __future__ import annotations
 
+import os
 import re
 from pathlib import Path
 from typing import Any, Optional
@@ -27,9 +28,9 @@ from memory_manager import (  # noqa: E402
 from psmf_engine import GeminiPSMFAgent  # noqa: E402
 from rag_system import ensure_all_local_indexes_ready  # noqa: E402
 
-# --- 演示登录（仅此账号可通过）---
-_DEMO_USERNAME: str = "psmf_coach"
-_DEMO_PASSWORD: str = "vibe_coding"
+# --- 演示登录（可通过 .env 覆盖，便于公开作品集与本地演示复用）---
+_DEMO_USERNAME: str = (os.environ.get("PSMF_DEMO_USERNAME") or "psmf_coach").strip()
+_DEMO_PASSWORD: str = (os.environ.get("PSMF_DEMO_PASSWORD") or "demo_password").strip()
 
 
 def _web_user_id(login_name: str) -> str:

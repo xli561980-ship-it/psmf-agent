@@ -6,6 +6,9 @@
 venv/
 __pycache__/
 *.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
 chroma_db/
 .cache/
@@ -17,3 +20,7 @@ user_profiles.json*
 
 .DS_Store
 *.log
+*.sqlite3
+*.db
+dist/
+build/
