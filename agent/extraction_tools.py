@@ -78,6 +78,33 @@ def _parse_hh_mm(text: str) -> dict[str, str]:
     return out
 
 
+def _extract_weight_kg(text: str) -> float | None:
+    m_weight = re.search(r"(\d+(?:\.\d+)?)\s*(?:kg|KG|公斤|千克)", text)
+    if m_weight:
+        return float(m_weight.group(1))
+    return None
+
+
+def _extract_body_fat_percentage(text: str, *, has_onboarding_context: bool) -> float | None:
+    patterns = (
+        r"(?:体脂率?|bf|body\s*fat)(?:大概|约|是|为|:|：)?\s*(\d+(?:\.\d+)?)\s*%?",
+        r"(\d+(?:\.\d+)?)\s*%?\s*(?:体脂率?|bf|body\s*fat)",
+    )
+    for pattern in patterns:
+        match = re.search(pattern, text, re.IGNORECASE)
+        if match:
+            return float(match.group(1))
+
+    if has_onboarding_context:
+        percentages = re.findall(r"(\d+(?:\.\d+)?)\s*%", text)
+        if len(percentages) == 1:
+            value = float(percentages[0])
+            if 3 <= value <= 60:
+                return value
+
+    return None
+
+
 def heuristic_extract_user_facts(
     user_text: str,
     *,
@@ -93,18 +120,17 @@ def heuristic_extract_user_facts(
     else:
         gender = profile.get("gender")
 
-    weight_kg = None
-    m_weight = re.search(r"(\d+(?:\.\d+)?)\s*(?:kg|KG|公斤|千克)", text)
-    if m_weight:
-        weight_kg = float(m_weight.group(1))
-    else:
+    weight_kg = _extract_weight_kg(text)
+    if weight_kg is None:
         weight_kg = _coerce_float(profile.get("weight"))
 
-    body_fat = None
-    m_bf = re.search(r"体脂(?:率)?(?:大概|约|是|:|：)?\s*(\d+(?:\.\d+)?)\s*%?", text)
-    if m_bf:
-        body_fat = float(m_bf.group(1))
-    else:
+    has_onboarding_context = bool(
+        gender
+        or _extract_weight_kg(text) is not None
+        or any(term in text for term in ("体重", "体脂", "男", "女", "男性", "女性", "男生", "女生"))
+    )
+    body_fat = _extract_body_fat_percentage(text, has_onboarding_context=has_onboarding_context)
+    if body_fat is None:
         body_fat = _coerce_float(profile.get("body_fat"))
 
     symptoms = [

@@ -15,6 +15,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from agent.orchestrator import AgentOrchestrator, build_default_tool_registry
+from agent.extraction_tools import heuristic_extract_user_facts
 from agent.planner import AgentPlanner
 from agent.schemas import AgentState, PlannerDecision
 from memory_manager import UserStateManager
@@ -60,6 +61,14 @@ def check_psmf_tool_calculation() -> None:
     _assert(round(float(data["protein_g_min"]), 1) == 177.6, "protein min mismatch")
     _assert(round(float(data["protein_g_max"]), 1) == 213.2, "protein max mismatch")
     print("psmf_tool_calculation_ok")
+
+
+def check_compact_vitals_extraction() -> None:
+    facts = heuristic_extract_user_facts("男，85kg，30%")
+    _assert(facts["gender"] == "male", "compact vitals should extract gender")
+    _assert(facts["weight_kg"] == 85.0, "compact vitals should extract weight")
+    _assert(facts["body_fat_percentage"] == 30.0, "compact vitals should extract body fat")
+    print("compact_vitals_extraction_ok")
 
 
 def check_safety_hard_stop() -> None:
@@ -139,6 +148,7 @@ def _test_context():
 def main() -> None:
     check_tool_registry_core_tools()
     check_psmf_tool_calculation()
+    check_compact_vitals_extraction()
     check_safety_hard_stop()
     check_orchestrator_tool_failure_fallback()
     check_readme_startup_commands()

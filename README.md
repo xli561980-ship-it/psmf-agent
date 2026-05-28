@@ -4,6 +4,10 @@
 
 项目以 PSMF（Protein Sparing Modified Fast）减脂协议为业务知识底座，结合 Gemini、RAG、本地用户记忆、Streamlit 网页入口、Telegram Bot、CLI 和安全规则，展示如何把专家经验转化为可运行、可解释、可扩展的 AI 健康管理顾问方案。
 
+## Demo 预览
+
+![PSMF Agent Streamlit Demo](docs/assets/streamlit-demo.png)
+
 ## 业务背景与客户痛点
 
 目标客户可以包括：

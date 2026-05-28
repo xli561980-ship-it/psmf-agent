@@ -79,7 +79,24 @@ def _format_tp(tp: Any) -> str:
     return "—"
 
 
+def _render_runtime_status(agent: AgentOrchestrator) -> None:
+    st.sidebar.markdown("### 运行状态")
+    has_key = bool((os.environ.get("GEMINI_API_KEY") or "").strip())
+    if agent.model_client.available:
+        st.sidebar.success("语义模型：Gemini 已启用")
+        st.sidebar.caption(f"规划 / 生成模型：`{agent.model_client.model}`")
+        st.sidebar.caption(f"快速抽取模型：`{agent.model_client.fast_model}`")
+    elif not has_key:
+        st.sidebar.warning("语义模型：未配置，当前为本地规则兜底")
+        st.sidebar.caption("未检测到 `.env` 中的 `GEMINI_API_KEY`。")
+    else:
+        st.sidebar.warning("语义模型：配置存在，但当前不可用")
+        st.sidebar.caption("请检查 Gemini 依赖、模型名、网络或代理配置。")
+    st.sidebar.divider()
+
+
 def _render_sidebar_vitals(agent: AgentOrchestrator, uid: str) -> None:
+    _render_runtime_status(agent)
     st.sidebar.markdown("### 当前档案（核心体征）")
     st.sidebar.caption(f"用户 ID：`{uid}`")
     prof: dict[str, Any] = agent.memory.get_user(uid)
@@ -222,7 +239,9 @@ def main() -> None:
         with st.chat_message("assistant"):
             _render_assistant_markdown(amsg)
 
-    user_prompt: Optional[str] = st.chat_input("输入消息，或结合侧栏图片一起发送…")
+    user_prompt: Optional[str] = st.chat_input(
+        "第一步示例：男，85kg，30%；之后可继续打卡、提问或结合侧栏图片发送…"
+    )
     if user_prompt is None:
         return
 
