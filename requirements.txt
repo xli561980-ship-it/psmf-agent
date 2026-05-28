@@ -1,0 +1,15 @@
+# RAG / 向量库
+chromadb>=0.4.22
+
+# Gemini Agent
+google-genai>=1.0.0
+python-dotenv>=1.0.0
+
+# Telegram（v20+ 异步）
+python-telegram-bot>=20.0
+
+# 定时任务（主动提醒 / 周报）
+APScheduler>=3.10.0
+
+# 网页 Demo（与 Telegram 共用 user_profiles.json）
+streamlit>=1.28.0
