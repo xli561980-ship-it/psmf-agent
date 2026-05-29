@@ -2,7 +2,7 @@
 
 面向健康管理、减脂陪伴和营养咨询场景的 AI Agent 行业解决方案原型。它不是一个通用聊天机器人，而是围绕“用户建档、饮食 / 训练打卡、长期跟进、知识库问答、风险识别和多渠道触达”这一套具体业务流程设计的垂直行业 Agent。
 
-项目以 PSMF（Protein Sparing Modified Fast）减脂协议为业务知识底座，结合 Gemini、RAG、本地用户记忆、Streamlit 网页入口、Telegram Bot、CLI 和安全规则，展示如何把专家经验转化为可运行、可解释、可扩展的 AI 健康管理顾问方案。
+项目以 PSMF（Protein Sparing Modified Fast）减脂协议为业务知识底座，结合 Gemini、RAG、本地用户记忆、Streamlit 网页入口、Telegram Bot、CLI 和安全规则，展示如何把专家经验转化为可运行、可解释、可扩展的 AI 健康管理顾问方案。当前核心流程已经迁移为明确的 **ReAct 风格工具调用 Agent**：规划器先根据上下文决定下一步动作，工具执行后返回观察结果，Agent 再基于观察结果继续规划或生成最终回复。
 
 ## Demo 预览
 
@@ -28,11 +28,12 @@
 
 ## 解决方案概述
 
-PSMF Agent 将健康管理场景拆解为一个“规划器 + 工具调用 + 记忆 + 知识库”的智能体工作流：
+PSMF Agent 将健康管理场景拆解为一个 **ReAct 风格的“规划器 + 工具调用 + 观察结果 + 记忆 + 知识库”智能体工作流**。这里的 ReAct 不是展示隐藏推理链，而是把“Reason / Act / Observe”的工程结构落到可调试、可测试的代码路径里：
 
 - 使用 **AgentOrchestrator** 管理有限轮工具调用：初始化状态、执行安全预检、读取用户档案、调用规划器、执行工具、吸收观察结果、生成最终回复并持久化对话。
-- 使用 **规划器 / 推理器** 根据当前用户输入、用户档案、工具清单和上一轮观察结果选择下一步工具，输出简短的公开步骤摘要，不暴露完整推理链。
-- 使用 **工具注册表** 统一管理 PSMF 计算、RAG 检索、记忆读写、饮食打卡、补剂打卡、每日总结和对话保存等工具。
+- 使用 **规划器 / 推理器** 承担 Reason：根据当前用户输入、用户档案、工具清单和上一轮观察结果选择下一步工具，输出简短的公开步骤摘要，不暴露完整推理链。
+- 使用 **工具注册表** 承担 Act：统一管理 PSMF 计算、RAG 检索、记忆读写、饮食打卡、补剂打卡、每日总结和对话保存等工具。
+- 使用 **ToolResult / AgentStep** 承担 Observe：把工具返回的结构化结果记录为可审计的观察结果，供下一轮规划器继续决策。
 - 使用 **RAG 知识库工具** 承载 PSMF 协议、食物数据库、训练指南、微量元素建议和症状风险矩阵，并通过 Markdown 标题语义切分提升检索命中质量。
 - 使用 **用户长期记忆工具** 记录体重、体脂、Category、瘦体重估算、蛋白质目标、补剂打卡、饮食记录和对话历史。
 - 使用 **Streamlit 网页入口** 展示完整用户旅程，适合方案沟通和业务验证。
@@ -113,15 +114,31 @@ flowchart TB
 → 确定性安全预检
 → AgentOrchestrator
 → 读取用户档案
-→ 规划器选择工具
-→ 执行工具
-→ 记录观察结果
-→ 必要时再次规划
+→ Reason：规划器选择下一步工具或 final
+→ Act：工具注册表执行工具
+→ Observe：记录 ToolResult / AgentStep
+→ 必要时继续 Reason / Act / Observe
 → 生成最终回复
 → 保存本轮可见对话
 ```
 
 `AgentStep` 只记录公开步骤摘要，例如 `extract_user_facts` 或 `search_psmf_knowledge`，用于调试和问题定位；最终回复不会暴露完整推理链。
+
+### ReAct 风格工具循环
+
+本项目的 ReAct 结构体现在 `agent/orchestrator.py`、`agent/planner.py`、`agent/tool_registry.py` 和 `agent/schemas.py` 的配合上：
+
+| ReAct 环节 | 当前实现 | 说明 |
+|---|---|---|
+| Reason | `AgentPlanner.decide(...)` 返回 `PlannerDecision` | 规划器读取 `AgentState`、可用工具清单、历史 observation 和用户档案，决定下一步调用哪个工具，或进入 `final`。 |
+| Thought 摘要 | `PlannerDecision.thought_summary` | 只保留可公开的短步骤名，例如 `extract_user_facts`、`calculate_psmf_targets`、`generate_daily_summary`；不记录完整隐藏推理链。 |
+| Act | `ToolRegistry.execute(...)` | 通过统一注册表执行工具，避免把 PSMF 计算、RAG、记忆写入和打卡逻辑硬编码在主对话流程里。 |
+| Observe | `ToolResult` + `AgentStep.observation` | 工具返回结构化数据、可读摘要和错误信息，作为下一轮规划器的输入。 |
+| State / Memory | `AgentState.scratchpad` + `UserStateManager` | 本轮工具结果进入 scratchpad，用户档案、每日记录和对话历史进入长期记忆。 |
+| Bounded Loop | `AgentOrchestrator(max_steps=6)` | 限制单轮最多工具调用次数，防止无止境循环；达到上限时基于已有观察结果给出保守回复。 |
+| Final | `AgentPlanner.finalize(...)` | 最终回复基于 observation、用户事实和安全状态生成，不直接展示内部 planner JSON 或工具日志。 |
+
+安全护栏和普通 ReAct 循环有意分层：`check_safety_risk` 会在进入规划器前先做确定性预检；如果信息抽取后发现新的症状线索，`_absorb_observation(...)` 还会再次调用安全检查。这样可以保证胸痛、呼吸困难、晕厥、意识模糊等高风险输入不会被当作普通饮食或训练问题继续处理。
 
 ### 已注册工具
 
